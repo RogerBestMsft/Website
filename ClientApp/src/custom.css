@@ -1,0 +1,78 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+   overflow: hidden; 
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.1fr 1.9fr;
+  grid-template-areas: "header" "main";
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden; 
+}
+
+.main {
+  display: grid;
+  grid-template-columns: 0.4fr 1.6fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: "sidebar content";
+  grid-area: main;
+}
+
+.sidebar {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.5fr 1.5fr;
+  grid-template-areas: "info" "locations";
+  grid-area: sidebar;
+}
+
+.locations {
+  grid-area: locations;
+ /*  overflow: auto; */
+}
+#scrollLocations {
+  overflow-y: auto;
+}
+
+.info {
+  grid-area: info;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.1fr 1.9fr;
+  grid-template-areas: "topbar" "map";
+  grid-area: content;
+}
+
+.TopBar {
+  grid-area: topbar;
+}
+
+.map {
+  grid-area: map;
+}
+
+.AppBar {
+  grid-area: header;
+}
+
+#contactCora {
+  position: fixed;
+  bottom: 2%;
+  right: 1%;
+}
