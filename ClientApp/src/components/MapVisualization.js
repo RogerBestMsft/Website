@@ -47,7 +47,7 @@ export const MapVisualization = () => {
             </div>
           </div>
 
-          <div className="content d-flex">
+          <div className="content">
             <TopBar location={location}></TopBar>
             <BingMaps MicrosoftRef={MicrosoftRef} mapRef={mapRef}></BingMaps>
             <Button
@@ -232,11 +232,11 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
     loop();
   }, [MicrosoftRef, mapRef]);
 
-  return (
-    <>
+    return (
+        <div className="map d-flex">
       {loading ? <Loader /> : null}
-      <div id="map" className="map"></div>
-    </>
+      <div id="map"></div>
+    </div>
   );
 };
 

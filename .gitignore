@@ -234,4 +234,4 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
-/appsettings.Developement.json
+/appsettings.Development.json
