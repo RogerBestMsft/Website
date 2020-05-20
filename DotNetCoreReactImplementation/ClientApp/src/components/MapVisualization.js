@@ -78,13 +78,14 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
   const resourcesRef = useRef({});
   const needsRef = useRef({});
   const infoBoxRef = useRef();
+  const bingMapsApiKey = useRef("")
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     const fetchBingMapsAPIKey = async () => {
       const fetchKey = await fetch(`data/bingmapsapikey`);
       const result = await fetchKey.json();
 
-      return result.key;
+      bingMapsApiKey.current = result.key;
     };
 
     const loadBingApi = () => {
@@ -173,7 +174,7 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
         MicrosoftRef.current.Maps.SpatialDataService.GeoDataAPIManager.getBoundary(
           location,
           requestOptions,
-          "ArwhxB4rXboJBbADfFM1UGXC_ser7_g9xgIp5IZqQU9DTik1FJoq8Cy18Zez25UF",
+          bingMapsApiKey.current,
           function (data) {
             const p = data.results[0].Polygons[0];
             const rings = p.getRings();
@@ -307,11 +308,11 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
 
     const loop = async () => {
       setLoading(true);
-      const key = await fetchBingMapsAPIKey();
+      await fetchBingMapsAPIKey();
       await loadBingApi();
       await loadBingMapsModules();
       await getData();
-      loadMap(key);
+      loadMap(bingMapsApiKey.current);
       addPushpins();
       setLoading(false);
     };
