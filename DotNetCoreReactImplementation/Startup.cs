@@ -32,18 +32,16 @@ namespace MapVisualization
         private static async Task<CosmosDbService> InitializeCosmosClientInstanceAsync(IConfigurationSection configurationSection)
         {
             string databaseName = configurationSection.GetSection("DatabaseName").Value;
-            string resourceContainerName = configurationSection.GetSection("resourceContainerName").Value;
             string userContainerName = configurationSection.GetSection("userContainerName").Value;
             string needContainerName = configurationSection.GetSection("needContainerName").Value;
             string account = configurationSection.GetSection("Account").Value;
             string key = configurationSection.GetSection("Key").Value;
             var clientBuilder = new CosmosClientBuilder(account, key);
             var client = clientBuilder.WithConnectionModeDirect().Build();
-            var cosmosDbService = new CosmosDbService(client, databaseName, resourceContainerName, userContainerName, needContainerName);
+            var cosmosDbService = new CosmosDbService(client, databaseName, userContainerName, needContainerName);
             var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
-            await database.Database.CreateContainerIfNotExistsAsync(resourceContainerName, "/Category");
             await database.Database.CreateContainerIfNotExistsAsync(userContainerName, "/PhoneNumber");
-            await database.Database.CreateContainerIfNotExistsAsync(needContainerName, "/Category");
+            await database.Database.CreateContainerIfNotExistsAsync(needContainerName, "/id");
 
             return cosmosDbService;
         }

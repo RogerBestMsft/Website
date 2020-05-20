@@ -8,7 +8,7 @@ namespace MapVisualization.Services
 {
     public class CosmosDbService : ICosmosDbService
     {
-        private readonly Container resourceContainer;
+
 
         private readonly Container userContainer;
 
@@ -17,40 +17,13 @@ namespace MapVisualization.Services
         public CosmosDbService(
             CosmosClient dbClient,
             string databaseName,
-            string resourceContainerName, string userContainerName, string needContainerName)
+            string userContainerName, string needContainerName)
         {
-            resourceContainer = dbClient.GetContainer(databaseName, resourceContainerName);
+
             userContainer = dbClient.GetContainer(databaseName, userContainerName);
             needContainer = dbClient.GetContainer(databaseName, needContainerName);
         }
 
-        public async Task<int> GetResourceTotalAsync(string queryString)
-        {
-            var query = resourceContainer.GetItemQueryIterator<Resource>(new QueryDefinition(queryString));
-            var results = new List<Resource>();
-            while (query.HasMoreResults)
-            {
-                var response = await query.ReadNextAsync();
-
-                results.AddRange(response.ToList());
-            }
-
-            return results.Count;
-        }
-
-        public async Task<List<Resource>> GetResourcesAsync(string queryString)
-        {
-            var query = resourceContainer.GetItemQueryIterator<Resource>(new QueryDefinition(queryString));
-            var results = new List<Resource>();
-            while (query.HasMoreResults)
-            {
-                var response = await query.ReadNextAsync();
-
-                results.AddRange(response.ToList());
-            }
-
-            return results;
-        }
 
         public async Task<Models.User> GetUserAsync(string id)
         {

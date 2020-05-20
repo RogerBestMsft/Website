@@ -26,33 +26,12 @@ namespace MapVisualization.Controllers
             this.configuration = configuration;
         }
 
-        [HttpGet("resources")]
-        public async Task<ActionResult<List<Resource>>> GetResources()
-        {
-            var users = await cosmosDbService.GetUsersAsync($"SELECT * FROM c");
-            var resources = await cosmosDbService.GetResourcesAsync("SELECT c.CreatedById, c.Category, c.Name, c.Quantity, c.IsUnopened,c.CanShip, c.id FROM c");
-
-            var lookup = users.ToDictionary(u => u.Id);
-            var result = new List<Resource>();
-            foreach (Resource resource in resources)
-            {
-                if (lookup.TryGetValue(resource.CreatedById, out User user))
-                {
-                    resource.Location = user.Location;
-                    resource.LocationCoordinates = user.LocationCoordinates;
-
-                    result.Add(resource);
-                }
-                continue;
-            }
-            return result;
-        }
 
         [HttpGet("needs")]
         public async Task<ActionResult<List<Need>>> GetNeeds()
         {
             var users = await cosmosDbService.GetUsersAsync("SELECT c.id, c.Location, c.LocationCoordinates FROM c");
-            var needs = await cosmosDbService.GetNeedsAsync("SELECT c.CreatedById, c.Category, c.Name, c.Quantity, c.UnopenedOnly, c.Instructions, c.id FROM c");
+            var needs = await cosmosDbService.GetNeedsAsync("SELECT c.CreatedById, c.Description, c.id FROM c");
 
             var lookup = users.ToDictionary(u => u.Id);
             var result = new List<Need>();
@@ -73,14 +52,14 @@ namespace MapVisualization.Controllers
         [HttpGet("locations")]
         public async Task<ActionResult<List<User>>> GetLocations()
         {
-            return await cosmosDbService.GetUsersAsync("SELECT c.id, c.Location, c.LocationCoordinates FROM c");
+            return await cosmosDbService.GetUsersAsync("SELECT c.id, c.IsGreyshirt, c.Location, c.LocationCoordinates FROM c");
         }
 
         [HttpGet("totals")]
         public async Task<ActionResult<Dictionary<string, int>>> GetTotals()
         {
 
-            int resourcesTotal = await cosmosDbService.GetResourceTotalAsync("SELECT * FROM c");
+            int resourcesTotal = (await cosmosDbService.GetUsersAsync("SELECT * FROM c")).Where(user => user.IsGreyshirt).ToList().Count;
             int needsTotal = await cosmosDbService.GetNeedTotalAsync("SELECT * FROM c");
             return new Dictionary<string, int>() { { "resources", resourcesTotal }, { "needs", needsTotal } };
         }
