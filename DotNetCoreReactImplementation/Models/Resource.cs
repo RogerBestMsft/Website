@@ -15,6 +15,8 @@ namespace MapVisualization.Models
         public bool IsUnopened { get; set; }
 
         public bool CanShip { get; set; }
+        
+        public string Location { get; set; }
 
         public Point LocationCoordinates { get; set; }
     }

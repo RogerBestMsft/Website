@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { renderToString } from "react-dom/server";
 
+import { polygon, pointGrid, pointOnFeature, bbox } from "@turf/turf";
+
 import Button from "react-bootstrap/Button";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
@@ -73,8 +75,8 @@ export const TopBar = ({ location }) => {
 };
 
 export const BingMaps = ({ MicrosoftRef, mapRef }) => {
-  const resourcesRef = useRef([]);
-  const needsRef = useRef([]);
+  const resourcesRef = useRef({});
+  const needsRef = useRef({});
   const infoBoxRef = useRef();
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -126,6 +128,7 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
               "Microsoft.Maps.GeoJson",
               "Microsoft.Maps.Search",
               "Microsoft.Maps.Clustering",
+              "Microsoft.Maps.SpatialDataService",
             ],
             resolve
           );
@@ -134,45 +137,103 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
     };
 
     const getData = async () => {
+      const group = (resourceList) => {
+        const result = {};
+        for (const resource of resourceList) {
+          if (!result[resource.location]) {
+            result[resource.location] = [];
+          }
+          result[resource.location].push(resource);
+        }
+        return result;
+      };
+
       try {
         const fetchResources = await fetch(`data/resources`);
         const tempResources = await fetchResources.json();
         const fetchNeeds = await fetch(`data/needs`);
         const tempNeeds = await fetchNeeds.json();
 
-        resourcesRef.current = tempResources;
-        needsRef.current = tempNeeds;
+        resourcesRef.current = group(tempResources);
+        needsRef.current = group(tempNeeds);
       } catch (e) {}
     };
 
     const plotPushpins = (resources, type, pinsList) => {
-      for (const resource of resources) {
-        let locationResource = new MicrosoftRef.current.Maps.Location(
-          resource.locationCoordinates.position.latitude,
-          resource.locationCoordinates.position.longitude
-        );
-        //Create custom Pushpin
-        let pushpinResource = new MicrosoftRef.current.Maps.Pushpin(
-          locationResource,
-          {
-            color: type ? "green" : "red",
+      let requestOptions = {
+        lod: 0,
+        entityType: "Postcode1",
+        getAllPolygons: false,
+      };
+      let polygonOptions = {
+        strokeColor: "blue",
+        visible: true,
+      };
+      for (const location in resources) {
+        MicrosoftRef.current.Maps.SpatialDataService.GeoDataAPIManager.getBoundary(
+          location,
+          requestOptions,
+          "ArwhxB4rXboJBbADfFM1UGXC_ser7_g9xgIp5IZqQU9DTik1FJoq8Cy18Zez25UF",
+          function (data) {
+            const p = data.results[0].Polygons[0];
+            const rings = p.getRings();
+            const parsedRings = [];
+            for (const ring of rings) {
+              const parsedRing = [];
+              for (const coords of ring) {
+                const parsedCoords = [coords.latitude, coords.longitude];
+                parsedRing.push(parsedCoords);
+              }
+              parsedRings.push(parsedRing);
+            }
+            const poly = polygon(parsedRings);
+
+            const grid = pointGrid(bbox(poly), 0.1, { mask: poly });
+
+            for (const [index, resource] of resources[location].entries()) {
+              const point = grid.features[index];
+              console.log("index", index);
+              console.log("point", point);
+
+              if (point !== undefined) {
+                const locationResource = new MicrosoftRef.current.Maps.Location(
+                  point.geometry.coordinates[0],
+                  point.geometry.coordinates[1]
+                );
+                //Create custom Pushpin
+                const pushpinResource = new MicrosoftRef.current.Maps.Pushpin(
+                  locationResource,
+                  {
+                    color: type ? "green" : "red",
+                  }
+                );
+                pushpinResource.metadata = {
+                  title: resource.name,
+
+                  category: resource.category,
+                  quantity: resource.quantity,
+                  description: resource.description,
+                };
+                MicrosoftRef.current.Maps.Events.addHandler(
+                  pushpinResource,
+                  "click",
+                  pushpinClicked
+                );
+                //Add the apushpin to the map
+                pinsList.push(pushpinResource);
+                console.count("pushpin added");
+              }
+            }
+            mapRef.current.entities.push(data.results[0].Polygons[0]);
+          },
+          polygonOptions,
+          function errCallback(callbackState, networkStatus, statusMessage) {
+            console.log(callbackState);
+            console.log(networkStatus);
+            console.log(statusMessage);
           }
         );
-        pushpinResource.metadata = {
-          title: resource.name,
-          category: resource.category,
-          quantity: resource.quantity,
-          description: resource.description,
-        };
-        MicrosoftRef.current.Maps.Events.addHandler(
-          pushpinResource,
-          "click",
-          pushpinClicked
-        );
-        //Add the pushpin to the map
-        pinsList.push(pushpinResource);
       }
-
       return pinsList;
     };
 
@@ -180,23 +241,46 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
       let pushpin = event.target;
       if (pushpin.metadata) {
         const { title, category, quantity, description } = pushpin.metadata;
-        const component = (
-          <InfoBoxTemplate
-            title={title}
-            category={category}
-            quantity={quantity}
-            description={description}
-          />
-        );
-        let infoBoxHtml = renderToString(component);
+
+        //TODO: try inject the htmal via js
         infoBoxRef.current.setOptions({
           location: pushpin.getLocation(),
-          htmlContent: infoBoxHtml,
+          title: `${category} <hr/> <h3>${title}</h3>   ${quantity}`,
+          description: `${description}`,
+          showCloseButton: true,
 
           visible: true,
         });
       }
     };
+
+    const customizeClusteredPin = (cluster) => {
+      if (MicrosoftRef.current !== undefined) {
+        MicrosoftRef.current.Maps.Events.addHandler(
+          cluster,
+          "click",
+          clusteredClicked
+        );
+      }
+    };
+
+    const clusteredClicked = (e) => {
+      if (e.target.containedPushpins) {
+        var locs = [];
+        for (var i = 0, len = e.target.containedPushpins.length; i < len; i++) {
+          //Get the location of each pushpin.
+          locs.push(e.target.containedPushpins[i].getLocation());
+        }
+
+        //Create a bounding box for the pushpins.
+        var bounds = MicrosoftRef.current.Maps.LocationRect.fromLocations(locs);
+
+        //Zoom into the bounding box of the cluster.
+        //Add a padding to compensate for the pixel area of the pushpins.
+        mapRef.current.setView({ bounds: bounds, padding: 100 });
+      }
+    };
+
     const addPushpins = () => {
       if (MicrosoftRef.current !== undefined && mapRef.current !== undefined) {
         let center = mapRef.current.getCenter();
@@ -213,7 +297,10 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
         plotPushpins(resourcesRef.current, resourceType, pinsList);
         plotPushpins(needsRef.current, !resourceType, pinsList);
 
-        var clusterLayer = new MicrosoftRef.current.Maps.ClusterLayer(pinsList);
+        var clusterLayer = new MicrosoftRef.current.Maps.ClusterLayer(
+          pinsList,
+          { clusteredPinCallback: customizeClusteredPin }
+        );
         mapRef.current.layers.insert(clusterLayer);
       }
     };
@@ -232,8 +319,8 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
     loop();
   }, [MicrosoftRef, mapRef]);
 
-    return (
-        <div className="map d-flex">
+  return (
+    <div className="map d-flex">
       {loading ? <Loader /> : null}
       <div id="map"></div>
     </div>
@@ -241,7 +328,6 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
 };
 
 export const Info = () => {
-  //TODO: make request here and not use props
   const [resourcesTotal, setResourcesTotal] = useState(0);
   const [needsTotal, setNeedsTotal] = useState(0);
 
@@ -394,18 +480,38 @@ export const LocationFilter = ({ MicrosoftRef, mapRef, changeLocation }) => {
   );
 };
 //TODO: make a this work for both needs and resources
-export const InfoBoxTemplate = ({ title, category, quantity, description }) => {
+export const InfoBoxTemplate = ({
+  title,
+  category,
+  quantity,
+  description,
+  infoBoxRef,
+}) => {
+  // const [show, setShow] = useState(true)
   return (
-    <Card>
-      <Card.Header>{category}</Card.Header>
-      <Card.Body>
-        <Card.Title className="">
-          <span>{title}</span>
-          <span>{quantity}</span>
-        </Card.Title>
-        <Card.Text>{description}</Card.Text>
-      </Card.Body>
-    </Card>
+    <>
+      <script>
+        {`
+  function closeInfoBox(infoBoxRef){
+  infoBoxRef.current.setOptions({visible:false});
+  }`}
+      </script>
+      <Card className="w-20 h-15">
+        <Card.Header>{category}</Card.Header>
+        <Card.Body>
+          <Card.Title className="">
+            <span>{title}</span>
+            <span>{quantity}</span>
+          </Card.Title>
+          <Card.Text>{description}</Card.Text>
+        </Card.Body>
+        <Card.Footer>
+          <Button href={`javascript : closeInfobox(${infoBoxRef})`}>
+            Close
+          </Button>
+        </Card.Footer>
+      </Card>
+    </>
   );
 };
 

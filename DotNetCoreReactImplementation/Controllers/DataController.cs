@@ -38,6 +38,7 @@ namespace MapVisualization.Controllers
             {
                 if (lookup.TryGetValue(resource.CreatedById, out User user))
                 {
+                    resource.Location = user.Location;
                     resource.LocationCoordinates = user.LocationCoordinates;
 
                     result.Add(resource);
@@ -59,6 +60,7 @@ namespace MapVisualization.Controllers
             {
                 if (lookup.TryGetValue(need.CreatedById, out User user))
                 {
+                    need.Location = user.Location;
                     need.LocationCoordinates = user.LocationCoordinates;
 
                     result.Add(need);

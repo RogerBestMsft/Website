@@ -15,6 +15,8 @@ namespace MapVisualization.Models
         public bool UnopenedOnly { get; set; }
 
         public string Instructions { get; set; }
+        
+        public string Location { get; set; }
 
         public Point LocationCoordinates { get; set; }
     }
