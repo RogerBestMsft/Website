@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { renderToString } from "react-dom/server";
 
-import { polygon, pointGrid, pointOnFeature, bbox } from "@turf/turf";
+import { polygon, pointGrid, bbox } from "@turf/turf";
+import { Link } from "react-router-dom";
 
 import Button from "react-bootstrap/Button";
 import ToggleButton from "react-bootstrap/ToggleButton";
@@ -31,7 +32,7 @@ export const MapVisualization = () => {
                 <div className="AppBar">
                     <Navbar bg="danger" variant="dark">
                         <Navbar.Brand href="#home">
-                            Team Rubicon - Emergency Food Assistance Program (EFAP)
+                            <div className="h2">Team Rubicon - Emergency Food Assistance Program (EFAP)</div>
             </Navbar.Brand>
                     </Navbar>
                 </div>
@@ -68,11 +69,11 @@ export const MapVisualization = () => {
 
 export const TopBar = ({ location }) => {
     return (
-        <div className="TopBar bg-secondary">
+        <div className="TopBar d-flex align-content-center justify-content-center bg-secondary">
             {/*<h3>{location}</h3>*/}
-            <div className="h3 mx-auto">
+            <div className="h3  text-light mx-auto">
                 Locations have been anonymized and are approximate. Read more in our
-        Privacy Promise! Learn more in our FAQ's{" "}
+       <Link style={{ color: "aqua" }} to="/privacy"> Privacy Promise!</Link> Learn more in our <Link style={{ color: "aqua" }} to="/faq">FAQ's</Link>
             </div>
         </div>
     );
@@ -196,7 +197,7 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
                         const grid = pointGrid(bbox(poly), 0.1, { mask: poly });
 
                         for (const [index, resource] of resources[location].entries()) {
-                            const point = grid.features[index];
+                            const point = grid.features[Math.floor(Math.random() * grid.features.length)];
 
                             if (point !== undefined) {
                                 const locationResource = new MicrosoftRef.current.Maps.Location(
