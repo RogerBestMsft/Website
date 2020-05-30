@@ -1,11 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
-import { renderToString } from "react-dom/server";
 
-import { polygon, pointGrid, pointOnFeature, bbox } from "@turf/turf";
+import { polygon, pointGrid, bbox } from "@turf/turf";
+import { Link } from "react-router-dom";
 
 import Button from "react-bootstrap/Button";
-import ToggleButton from "react-bootstrap/ToggleButton";
-import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Navbar from "react-bootstrap/Navbar";
@@ -16,7 +14,7 @@ export const MapVisualization = () => {
   const MicrosoftRef = useRef();
   const mapRef = useRef();
 
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState(" ");
 
   const changeLocation = (location) => {
     console.log("change location was called", location);
@@ -28,28 +26,19 @@ export const MapVisualization = () => {
   return (
     <div className="App">
       <div className="grid-container">
-        <div className="AppBar">
+        <div className="AppBar w-100">
           <Navbar bg="primary" variant="dark">
             <Navbar.Brand href="#home">
-              COVID-19: Resource and Needs Tracker
-            </Navbar.Brand>
+           CORAbot</Navbar.Brand>
           </Navbar>
         </div>
-        <div className="main">
-          <div id="sidebar" className="sidebar d-flex flex-column">
-            <div className="info mt-3">
               <Info></Info>
-            </div>
-            <div className="locations h-100 mt-3 d-flex ">
               <LocationFilter
                 MicrosoftRef={MicrosoftRef}
                 mapRef={mapRef}
                 changeLocation={changeLocation}
               ></LocationFilter>
-            </div>
-          </div>
 
-          <div className="content">
             <TopBar location={location}></TopBar>
             <BingMaps MicrosoftRef={MicrosoftRef} mapRef={mapRef}></BingMaps>
             <Button
@@ -61,16 +50,25 @@ export const MapVisualization = () => {
             </Button>
           </div>
         </div>
-      </div>
-    </div>
   );
 };
 
 export const TopBar = ({ location }) => {
   return (
-    <div className="TopBar bg-secondary">
-      <h3>{location}</h3>
+    <div className="TopBar w-100 d-flex align-content-center justify-content-center bg-secondary">
+    {/*<h3>{location}</h3>*/}
+    <div className="h3  text-light mx-auto">
+      Locations have been anonymized and are approximate. Read more in our
+      <Link style={{ color: "aqua" }} to="/privacy">
+        {" "}
+        Privacy Promise!
+      </Link>{" "}
+      Learn more in our{" "}
+      <Link style={{ color: "aqua" }} to="/faq">
+        FAQ's
+      </Link>
     </div>
+  </div>
   );
 };
 
@@ -78,7 +76,7 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
   const resourcesRef = useRef({});
   const needsRef = useRef({});
   const infoBoxRef = useRef();
-  const bingMapsApiKey = useRef("")
+  const bingMapsApiKey = useRef("");
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     const fetchBingMapsAPIKey = async () => {
@@ -125,8 +123,6 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
         return new Promise((resolve) => {
           MicrosoftRef.current.Maps.loadModule(
             [
-              "Microsoft.Maps.SpatialMath",
-              "Microsoft.Maps.GeoJson",
               "Microsoft.Maps.Search",
               "Microsoft.Maps.Clustering",
               "Microsoft.Maps.SpatialDataService",
@@ -138,16 +134,35 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
     };
 
     const getData = async () => {
-      const group = (resourceList) => {
+      const group = (resourceList, type) => {
         const result = {};
         for (const resource of resourceList) {
           if (!result[resource.location]) {
             result[resource.location] = [];
           }
+          resource.type = type ? "resources" : "needs";
           result[resource.location].push(resource);
         }
+
         return result;
       };
+      const combine = (resources, needs) => {
+        // Unique set of key in  both resources and needs
+        console.count("combine");
+        delete resources.null;
+        delete needs.null;
+        const uniqueKeys = [
+          ...new Set([...Object.keys(resources), ...Object.keys(needs)]),
+        ];
+        let result = {};
+        for (const key of uniqueKeys) {
+          result[key] = [...(resources[key] ?? []), ...(needs[key] ?? [])];
+          console.log("keys", result);
+        }
+
+        return result;
+      };
+
 
       try {
         const fetchResources = await fetch(`data/resources`);
@@ -155,12 +170,14 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
         const fetchNeeds = await fetch(`data/needs`);
         const tempNeeds = await fetchNeeds.json();
 
-        resourcesRef.current = group(tempResources);
-        needsRef.current = group(tempNeeds);
+        const resources = group(tempResources, true);
+        const needs = group(tempNeeds, false);
+
+        resourcesRef.current = combine(resources, needs);
       } catch (e) {}
     };
 
-    const plotPushpins = (resources, type, pinsList) => {
+    const plotPushpins = (resources, pinsList) => {
       let requestOptions = {
         lod: 0,
         entityType: "Postcode1",
@@ -187,14 +204,28 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
               }
               parsedRings.push(parsedRing);
             }
-            const poly = polygon(parsedRings);
+            const poly = polygon(parsedRings); let distance = 0.1;
 
-            const grid = pointGrid(bbox(poly), 0.1, { mask: poly });
+            let grid = pointGrid(bbox(poly), distance, { mask: poly });
+            let a = grid.features;
+            for (let i = a.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [a[i], a[j]] = [a[j], a[i]];
+            }
 
-            for (const [index, resource] of resources[location].entries()) {
-              const point = grid.features[index];
-              console.log("index", index);
-              console.log("point", point);
+            for (const resource of resources[location]) {
+              let point;
+              if (grid.features.length > 0) {
+                point = grid.features.pop();
+              } else {
+                grid = pointGrid(bbox(poly), distance, { mask: poly });
+                a = grid.features;
+                for (let i = a.length - 1; i > 0; i--) {
+                  const j = Math.floor(Math.random() * (i + 1));
+                  [a[i], a[j]] = [a[j], a[i]];
+                }
+                point = grid.features.pop();
+              }
 
               if (point !== undefined) {
                 const locationResource = new MicrosoftRef.current.Maps.Location(
@@ -205,7 +236,7 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
                 const pushpinResource = new MicrosoftRef.current.Maps.Pushpin(
                   locationResource,
                   {
-                    color: type ? "green" : "red",
+                    color: resource.type === "needs" ? "red" : "gray",
                   }
                 );
                 pushpinResource.metadata = {
@@ -292,12 +323,8 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
 
         infoBoxRef.current.setMap(mapRef.current);
 
-        // eslint-disable-next-line no-unused-vars
-        let resourceType = true;
         let pinsList = [];
-        plotPushpins(resourcesRef.current, resourceType, pinsList);
-        plotPushpins(needsRef.current, !resourceType, pinsList);
-
+        plotPushpins(resourcesRef.current, pinsList);
         var clusterLayer = new MicrosoftRef.current.Maps.ClusterLayer(
           pinsList,
           { clusteredPinCallback: customizeClusteredPin }
@@ -321,7 +348,7 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
   }, [MicrosoftRef, mapRef]);
 
   return (
-    <div className="map d-flex">
+    <div className="map h-100 w-100 d-flex">
       {loading ? <Loader /> : null}
       <div id="map"></div>
     </div>
@@ -343,13 +370,13 @@ export const Info = () => {
     fetchTotals();
   }, []);
   return (
-    <div className="mx-2 px-1 border-bottom">
-      <div className="d-flex align-items-center justify-content-between">
-        <div className="h3 font-weight-bold text-dark">Total Donations</div>
+    <div className="info m-3 border-bottom">
+      <div className="d-flex align-items-top justify-content-between">
+        <div className="h4 font-weight-bold text-dark">Total Donations</div>
         <div className="h3 text-success">{resourcesTotal}</div>
       </div>
-      <div className="d-flex align-items-center justify-content-between">
-        <div className="h3 font-weight-bold text-dark">Total Requests</div>
+      <div className="d-flex align-items-top justify-content-between">
+        <div className="h4 font-weight-bold text-dark">Total Requests</div>
         <div className="h3 text-danger">{needsTotal}</div>
       </div>
     </div>
@@ -375,6 +402,7 @@ export const LocationFilter = ({ MicrosoftRef, mapRef, changeLocation }) => {
     setSearch(event.target.value);
   };
   const handleLocationClick = (event) => {
+    event.target.focus();
     if (MicrosoftRef.current !== undefined) {
       let locationText = event.target.innerText;
       changeLocation(locationText);
@@ -387,11 +415,11 @@ export const LocationFilter = ({ MicrosoftRef, mapRef, changeLocation }) => {
         callback: (r) => {
           //Add the first result to the map and zoom into it.
           if (r && r.results && r.results.length > 0) {
-            let pin = new MicrosoftRef.current.Maps.Pushpin(
+            /* let pin = new MicrosoftRef.current.Maps.Pushpin(
               r.results[0].location
             );
             mapRef.current.entities.push(pin);
-
+ */
             mapRef.current.setView({ bounds: r.results[0].bestView });
           }
         },
@@ -430,7 +458,7 @@ export const LocationFilter = ({ MicrosoftRef, mapRef, changeLocation }) => {
   useEffect(() => {
     const unique = locations.filter((user) => {
       if (user.location !== null) {
-        return user["location"].toLowerCase().includes(search);
+        return user["location"].toLowerCase().includes(search.toLowerCase());
       }
       return false;
     });
@@ -439,10 +467,12 @@ export const LocationFilter = ({ MicrosoftRef, mapRef, changeLocation }) => {
   }, [search, locations]);
 
   return loading ? (
+    <div className="places m-3">
     <Loader />
+    </div>
   ) : (
-    <div className="d-flex flex-column  ">
-      <div className="d-flex flex-column px-1 mx-2 ">
+    <>
+    <div className="mx-3 filter p-2 ">
         <div className="h5 font-weight-bold">Browse</div>
         <InputGroup className="">
           <FormControl
@@ -458,15 +488,11 @@ export const LocationFilter = ({ MicrosoftRef, mapRef, changeLocation }) => {
           </InputGroup.Append>
         </InputGroup>
       </div>
-      {/* TODO: try changing this to radio buttons with button class applied */}
-      <ToggleButtonGroup
-        id="scrollLocations"
-        type="radio"
-        name="locations"
-        className="d-flex px-1 mx-2 flex-column"
-      >
+      <div className="w-100 places">
+        <div className="mx-3">
         {searchResults.map((item, index) => (
-          <ToggleButton
+          <Button
+          block
             value={index}
             key={index}
             className="   my-2"
@@ -474,44 +500,10 @@ export const LocationFilter = ({ MicrosoftRef, mapRef, changeLocation }) => {
             onClick={handleLocationClick}
           >
             {item.location}
-          </ToggleButton>
-        ))}
-      </ToggleButtonGroup>
-    </div>
-  );
-};
-//TODO: make a this work for both needs and resources
-export const InfoBoxTemplate = ({
-  title,
-  category,
-  quantity,
-  description,
-  infoBoxRef,
-}) => {
-  // const [show, setShow] = useState(true)
-  return (
-    <>
-      <script>
-        {`
-  function closeInfoBox(infoBoxRef){
-  infoBoxRef.current.setOptions({visible:false});
-  }`}
-      </script>
-      <Card className="w-20 h-15">
-        <Card.Header>{category}</Card.Header>
-        <Card.Body>
-          <Card.Title className="">
-            <span>{title}</span>
-            <span>{quantity}</span>
-          </Card.Title>
-          <Card.Text>{description}</Card.Text>
-        </Card.Body>
-        <Card.Footer>
-          <Button href={`javascript : closeInfobox(${infoBoxRef})`}>
-            Close
           </Button>
-        </Card.Footer>
-      </Card>
+        ))}
+      </div>
+    </div>
     </>
   );
 };
