@@ -1,11 +1,22 @@
+html,
 body {
   margin: 0;
+  height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-   overflow: hidden; 
+  overflow: hidden;
+}
+
+html {
+  --color-primary: #04bfd8;
+  --color-secondary: #0a1624;
+  --text-primary: #ffffff;
+  --text-secondary: #97989c;
+  --scrollbarBG: #cfd8dc;
+  --thumbBG: #90a4ae;
 }
 
 code {
@@ -15,64 +26,142 @@ code {
 
 .grid-container {
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 0.1fr 1.9fr;
-  grid-template-areas: "header" "main";
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(24, 1fr);
+  justify-self: start;
+  gap: 1% 1%;
   width: 100vw;
   height: 100vh;
-  overflow: hidden; 
+  z-index: 0;
 }
-
-.main {
-  display: grid;
-  grid-template-columns: 0.4fr 1.6fr;
-  grid-template-rows: 1fr;
-  grid-template-areas: "sidebar content";
-  grid-area: main;
-}
-
-.sidebar {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 0.5fr 1.5fr;
-  grid-template-areas: "info" "locations";
-  grid-area: sidebar;
-}
-
-.locations {
-  grid-area: locations;
- /*  overflow: auto; */
-}
-#scrollLocations {
-  overflow-y: auto;
-}
-
-.info {
-  grid-area: info;
-}
-
-.content {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 0.1fr 1.9fr;
-  grid-template-areas: "topbar" "map";
-  grid-area: content;
-}
-
-.TopBar {
-  grid-area: topbar;
-}
-
-.map {
-  grid-area: map;
-}
-
 .AppBar {
-  grid-area: header;
+  grid-area: 1 / 1 / 3 / 13;
+  z-index: 1;
+}
+.TopBar {
+  background-color: var(--color-primary);
+  grid-area: 3 / 1 / 5 / 10;
+  justify-self: start;
+  z-index: 1;
+}
+.info {
+  background-color: var(--color-secondary);
+  grid-area: 5 / 1 / 8 / 8;
+  justify-self: start;
+  z-index: 1;
+}
+.map {
+  grid-area: 3 / 1 / 25 / 13;
+  z-index: 0;
+}
+.locations {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(10, 1fr);
+  background-color: var(--color-primary);
+  overflow: auto;
+  z-index: 1;
+  grid-area: 15 / 1 / 25 / 13;
+  justify-self: center;
+}
+.filter {
+  grid-area: 1/ 1 / 2 / 2;
+}
+.places {
+  grid-area: 2 / 1 / 11 / 2;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+}
+.places::-webkit-scrollbar {
+  width: 11px;
+}
+.places::-webkit-scrollbar-track {
+  background: var(--scrollbarBG);
+}
+.places::-webkit-scrollbar-thumb {
+  background-color: var(--thumbBG);
+  border-radius: 6px;
+  border: 3px solid var(--scrollbarBG);
+}
+.contactCora {
+  background-color: var(--color-secondary);
+  grid-area: 5/ 10 / 8 / 13;
+  z-index: 1;
 }
 
-#contactCora {
-  position: fixed;
+/* Tablet grid */
+@media (min-width: 768px) {
+  .TopBar {
+    grid-area: 4 / 1 / 5 / 5;
+  }
+  .AppBar {
+    grid-area: 1 / 1 / 3 / 13;
+  }
+  .info {
+    grid-area: 6 / 1 / 10 / 4;
+    justify-self: stretch;
+  }
+  .map {
+    grid-area: 3 / 1 / 25 / 13;
+  }
+  .locations {
+    grid-area: 10 / 1 / 25 / 4;
+    justify-self: stretch;
+  }
+  .filter {
+    grid-area: 1/ 1 / 2 / 2;
+  }
+  .places {
+    grid-area: 2 / 1 / 11 / 2;
+  }
+  .contactCora {
+    grid-area: 23/ 11 / 24 / 13;
+  }
+}
+
+/* laptop and up grid */
+@media (min-width: 992px) {
+  .AppBar {
+    grid-area: 1 / 1 / 3 / 13;
+  }
+  .locations {
+    grid-area: 10 / 1 / 24 / 3;
+  }
+  .filter {
+    grid-area: 1/ 1 / 2 / 2;
+  }
+  .places {
+    grid-area: 2 / 1 / 11 / 2;
+  }
+  .info {
+    grid-area: 6 / 1 / 10 / 3;
+  }
+  .TopBar {
+    grid-area: 4 / 1 / 5 / 5;
+  }
+  .map {
+    grid-area: 3 / 1 / 25 / 13;
+  }
+}
+
+.btn-outline-light:not(:disabled):not(.disabled):focus {
+  color: var(--color-primary);
+  background-color: white;
+  border-color: white;
+}
+
+.anon {
+  position: absolute;
+  left: 50%;
   bottom: 2%;
-  right: 1%;
+  z-index: 1;
+}
+
+.infobox-body {
+  background-color: var(--color-primary);
+  border-radius: 5%;
+}
+.infobox-info > div {
+  color: white;
 }

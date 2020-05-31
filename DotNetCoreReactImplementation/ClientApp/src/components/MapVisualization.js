@@ -9,12 +9,20 @@ import FormControl from "react-bootstrap/FormControl";
 import Navbar from "react-bootstrap/Navbar";
 import Card from "react-bootstrap/Card";
 import Spinner from "react-bootstrap/Spinner";
+import Nav from "react-bootstrap/Nav";
+import Toast from "react-bootstrap/Toast";
+import Image from "react-bootstrap/Image";
+
+import logo from "../assets/coraLogo.svg";
+import pushpin from "../assets/Pinscropped.svg";
+import pushpinInvert from "../assets/Pin Invertcropped.svg";
 
 export const MapVisualization = () => {
   const MicrosoftRef = useRef();
   const mapRef = useRef();
 
   const [location, setLocation] = useState(" ");
+  const [show, setShow] = useState(true);
 
   const changeLocation = (location) => {
     console.log("change location was called", location);
@@ -26,53 +34,88 @@ export const MapVisualization = () => {
   return (
     <div className="App">
       <div className="grid-container">
-        <div className="AppBar w-100">
-          <Navbar bg="primary" variant="dark">
-            <Navbar.Brand href="#home">
-           CORAbot</Navbar.Brand>
-          </Navbar>
-        </div>
-              <Info></Info>
-              <LocationFilter
-                MicrosoftRef={MicrosoftRef}
-                mapRef={mapRef}
-                changeLocation={changeLocation}
-              ></LocationFilter>
+        <AppBar></AppBar>
+        <Info></Info>
+        <LocationFilter
+          MicrosoftRef={MicrosoftRef}
+          mapRef={mapRef}
+          changeLocation={changeLocation}
+        ></LocationFilter>
 
-            <TopBar location={location}></TopBar>
-            <BingMaps MicrosoftRef={MicrosoftRef} mapRef={mapRef}></BingMaps>
-            <Button
-              id="contactCora"
-              href="sms://+14253828851;?&body=Hi%20CORA"
-              variant="secondary"
-            >
-              Contact CORAbot
-            </Button>
-          </div>
-        </div>
+        <TopBar location={location}></TopBar>
+        <BingMaps
+          MicrosoftRef={MicrosoftRef}
+          mapRef={mapRef}
+          setShow={setShow}
+        ></BingMaps>
+        <Button
+          className="contactCora"
+          href="sms://+14253828851;?&body=Hi%20CORA"
+          variant="secondary"
+        >
+          Contact CORAbot
+        </Button>
+        {/* <AlertAnon show={show} setShow={setShow}></AlertAnon> */}
+      </div>
+    </div>
+  );
+};
+const AlertAnon = ({ show, setShow }) => {
+  return (
+    <Toast show={show} onClose={() => setShow(false)} delay={4000} autohide>
+      <Toast.Header closeButton>
+        <Toast.Title>Attention</Toast.Title>
+      </Toast.Header>
+      <Toast.body>
+        {" "}
+        Locations have been anonymized and are approximate. Read more in our
+        <Link style={{ color: "white" }} to="/privacy">
+          {" "}
+          Privacy Promise!
+        </Link>{" "}
+        Learn more in our{" "}
+        <Link style={{ color: "white" }} to="/faq">
+          FAQ's
+        </Link>
+      </Toast.body>
+    </Toast>
+  );
+};
+
+export const AppBar = () => {
+  return (
+    <div className="AppBar w-100">
+      <Navbar variant="light" className="justify-content-between h-100">
+        <Navbar.Brand as={Link} to="/home" className="ml-3 h-100">
+          <Image src={logo} className="h-100" alt="CORAbot logo" />
+        </Navbar.Brand>
+        <Nav className="">
+          <Nav.Link as={Link} to="/home">
+            About
+          </Nav.Link>
+          <Nav.Link as={Link} to="/home">
+            Team
+          </Nav.Link>
+          <Nav.Link as={Link} to="/home">
+            Resource
+          </Nav.Link>
+        </Nav>
+      </Navbar>
+    </div>
   );
 };
 
 export const TopBar = ({ location }) => {
   return (
-    <div className="TopBar w-100 d-flex align-content-center justify-content-center bg-secondary">
-    {/*<h3>{location}</h3>*/}
-    <div className="h3  text-light mx-auto">
-      Locations have been anonymized and are approximate. Read more in our
-      <Link style={{ color: "aqua" }} to="/privacy">
-        {" "}
-        Privacy Promise!
-      </Link>{" "}
-      Learn more in our{" "}
-      <Link style={{ color: "aqua" }} to="/faq">
-        FAQ's
-      </Link>
-    </div>
-  </div>
+    <Card className="TopBar bgPrimary ml-lg-3">
+      <div className="h6 mx-3 text-light">
+        COVID-19: RESOURCE AND NEEDS TRACKER
+      </div>
+    </Card>
   );
 };
 
-export const BingMaps = ({ MicrosoftRef, mapRef }) => {
+export const BingMaps = ({ MicrosoftRef, mapRef, setShow }) => {
   const resourcesRef = useRef({});
   const needsRef = useRef({});
   const infoBoxRef = useRef();
@@ -163,7 +206,6 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
         return result;
       };
 
-
       try {
         const fetchResources = await fetch(`data/resources`);
         const tempResources = await fetchResources.json();
@@ -204,7 +246,8 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
               }
               parsedRings.push(parsedRing);
             }
-            const poly = polygon(parsedRings); let distance = 0.1;
+            const poly = polygon(parsedRings);
+            let distance = 0.5;
 
             let grid = pointGrid(bbox(poly), distance, { mask: poly });
             let a = grid.features;
@@ -236,7 +279,9 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
                 const pushpinResource = new MicrosoftRef.current.Maps.Pushpin(
                   locationResource,
                   {
-                    color: resource.type === "needs" ? "red" : "gray",
+                    icon: resource.type === "needs" ? pushpin : pushpinInvert,
+                    // iconSize: { width: 25, height: 25 },
+                    anchor: new MicrosoftRef.current.Maps.Point(50, 50),
                   }
                 );
                 pushpinResource.metadata = {
@@ -244,7 +289,7 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
 
                   category: resource.category,
                   quantity: resource.quantity,
-                  description: resource.description,
+                  description: resource.instructions ?? " ",
                 };
                 MicrosoftRef.current.Maps.Events.addHandler(
                   pushpinResource,
@@ -277,7 +322,7 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
         //TODO: try inject the htmal via js
         infoBoxRef.current.setOptions({
           location: pushpin.getLocation(),
-          title: `${category} <hr/> <h3>${title}</h3>   ${quantity}`,
+          title: `${category} : ${title}  | ${quantity}`,
           description: `${description}`,
           showCloseButton: true,
 
@@ -342,6 +387,7 @@ export const BingMaps = ({ MicrosoftRef, mapRef }) => {
       loadMap(bingMapsApiKey.current);
       addPushpins();
       setLoading(false);
+      setShow(true);
     };
 
     loop();
@@ -370,22 +416,25 @@ export const Info = () => {
     fetchTotals();
   }, []);
   return (
-    <div className="info m-3 border-bottom">
-      <div className="d-flex align-items-top justify-content-between">
-        <div className="h4 font-weight-bold text-dark">Total Donations</div>
-        <div className="h3 text-success">{resourcesTotal}</div>
+    <Card className="info ml-lg-3 " text="light">
+      <div className="clearfix m-sm-3 m-lg-3">
+        <div className="float-left font-weight-bold">Total Donations</div>
+        <div className="float-right font-weight-bold">
+          {" " + resourcesTotal}
+        </div>
       </div>
-      <div className="d-flex align-items-top justify-content-between">
-        <div className="h4 font-weight-bold text-dark">Total Requests</div>
-        <div className="h3 text-danger">{needsTotal}</div>
+      <div className="clearfix m-sm-3 m-lg-3">
+        <div className="float-left font-weight-bold">Total Requests</div>
+        <div className="float-right font-weight-bold">{" " + needsTotal}</div>
       </div>
-    </div>
+    </Card>
   );
 };
 
 export const LocationFilter = ({ MicrosoftRef, mapRef, changeLocation }) => {
-  //TODO: make request here and not use props
+  //TODO: show location in sidebar
 
+  const [location, setLocation] = useState("");
   const locateUser = () => {
     navigator.geolocation.getCurrentPosition(function (position) {
       let loc = new MicrosoftRef.current.Maps.Location(
@@ -405,7 +454,7 @@ export const LocationFilter = ({ MicrosoftRef, mapRef, changeLocation }) => {
     event.target.focus();
     if (MicrosoftRef.current !== undefined) {
       let locationText = event.target.innerText;
-      changeLocation(locationText);
+      setLocation(locationText);
       let searchManager = new MicrosoftRef.current.Maps.Search.SearchManager(
         mapRef.current
       );
@@ -467,12 +516,12 @@ export const LocationFilter = ({ MicrosoftRef, mapRef, changeLocation }) => {
   }, [search, locations]);
 
   return loading ? (
-    <div className="places m-3">
-    <Loader />
+    <div className="locations w-100 bgPrimary ml-lg-3">
+      <Loader />
     </div>
   ) : (
-    <>
-    <div className="mx-3 filter p-2 ">
+    <Card className="locations  bgPrimary  ml-lg-3">
+      <div className=" border-bottom-1 mx-3 filter">
         <div className="h5 font-weight-bold">Browse</div>
         <InputGroup className="">
           <FormControl
@@ -482,29 +531,30 @@ export const LocationFilter = ({ MicrosoftRef, mapRef, changeLocation }) => {
             onChange={handleSearch}
           />
           <InputGroup.Append>
-            <Button variant="outline-secondary" onClick={locateUser}>
+            <Button variant="outline-light" onClick={locateUser}>
               Locate!
             </Button>
           </InputGroup.Append>
         </InputGroup>
+        <div>{location}</div>
       </div>
       <div className="w-100 places">
         <div className="mx-3">
-        {searchResults.map((item, index) => (
-          <Button
-          block
-            value={index}
-            key={index}
-            className="   my-2"
-            variant="outline-primary"
-            onClick={handleLocationClick}
-          >
-            {item.location}
-          </Button>
-        ))}
+          {searchResults.map((item, index) => (
+            <Button
+              block
+              value={index}
+              key={index}
+              className="   my-2"
+              variant="outline-light"
+              onClick={handleLocationClick}
+            >
+              {item.location}
+            </Button>
+          ))}
+        </div>
       </div>
-    </div>
-    </>
+    </Card>
   );
 };
 
