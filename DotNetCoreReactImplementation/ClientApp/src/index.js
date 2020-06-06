@@ -5,6 +5,8 @@ import { BrowserRouter } from "react-router-dom";
 import { App } from "./App";
 import * as serviceWorker from "./serviceWorker";
 
+import "./index.css"
+
 const baseUrl = document.getElementsByTagName("base")[0].getAttribute("href");
 const rootElement = document.getElementById("root");
 

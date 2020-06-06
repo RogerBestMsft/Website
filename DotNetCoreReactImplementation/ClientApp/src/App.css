@@ -1,0 +1,15 @@
+#root{
+    min-height: 100%;
+}
+.infobox-body {
+  background-color: var(--color-primary);
+  border-radius: 5%;
+}
+.infobox-info > div {
+  color: white;
+}
+.btn-outline-light:not(:disabled):not(.disabled):focus {
+  color: var(--color-primary);
+  background-color: white;
+  border-color: white;
+}

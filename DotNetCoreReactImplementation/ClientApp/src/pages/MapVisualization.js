@@ -3,19 +3,19 @@ import React, { useEffect, useState, useRef } from "react";
 import { polygon, pointGrid, bbox } from "@turf/turf";
 import { Link } from "react-router-dom";
 
+import { AppBar } from "../components/AppBar";
+
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
-import Navbar from "react-bootstrap/Navbar";
 import Card from "react-bootstrap/Card";
 import Spinner from "react-bootstrap/Spinner";
-import Nav from "react-bootstrap/Nav";
 import Toast from "react-bootstrap/Toast";
-import Image from "react-bootstrap/Image";
 
-import logo from "../assets/coraLogo.svg";
 import pushpin from "../assets/Pinscropped.svg";
 import pushpinInvert from "../assets/Pin Invertcropped.svg";
+
+import styles from "./MapVisualization.module.css";
 
 export const MapVisualization = () => {
   const MicrosoftRef = useRef();
@@ -32,9 +32,9 @@ export const MapVisualization = () => {
   };
 
   return (
-    <div className="App">
-      <div className="grid-container">
-        <AppBar></AppBar>
+    <div className={styles.pageContainer}>
+      <AppBar></AppBar>
+      <div className={styles.gridContainer}>
         <Info></Info>
         <LocationFilter
           MicrosoftRef={MicrosoftRef}
@@ -49,7 +49,7 @@ export const MapVisualization = () => {
           setShow={setShow}
         ></BingMaps>
         <Button
-          className="contactCora"
+          className={styles.contactCora}
           href="sms://+14253828851;?&body=Hi%20CORA"
           variant="secondary"
         >
@@ -82,32 +82,9 @@ const AlertAnon = ({ show, setShow }) => {
   );
 };
 
-export const AppBar = () => {
-  return (
-    <div className="AppBar w-100">
-      <Navbar variant="light" className="justify-content-between h-100">
-        <Navbar.Brand as={Link} to="/home" className="ml-3 h-100">
-          <Image src={logo} className="h-100" alt="CORAbot logo" />
-        </Navbar.Brand>
-        <Nav className="">
-          <Nav.Link as={Link} to="/home">
-            About
-          </Nav.Link>
-          <Nav.Link as={Link} to="/home">
-            Team
-          </Nav.Link>
-          <Nav.Link as={Link} to="/home">
-            Resource
-          </Nav.Link>
-        </Nav>
-      </Navbar>
-    </div>
-  );
-};
-
 export const TopBar = ({ location }) => {
   return (
-    <Card className="TopBar bgPrimary ml-lg-3">
+    <Card className={`${styles.topBar} bgPrimary ml-lg-3`}>
       <div className="h6 mx-3 text-light">
         COVID-19: RESOURCE AND NEEDS TRACKER
       </div>
@@ -394,7 +371,7 @@ export const BingMaps = ({ MicrosoftRef, mapRef, setShow }) => {
   }, [MicrosoftRef, mapRef]);
 
   return (
-    <div className="map h-100 w-100 d-flex">
+    <div className={`${styles.map} h-100 w-100 d-flex`}>
       {loading ? <Loader /> : null}
       <div id="map"></div>
     </div>
@@ -416,7 +393,7 @@ export const Info = () => {
     fetchTotals();
   }, []);
   return (
-    <Card className="info ml-lg-3 " text="light">
+    <Card className={`${styles.info} ml-lg-3`} text="light">
       <div className="clearfix m-sm-3 m-lg-3">
         <div className="float-left font-weight-bold">Total Donations</div>
         <div className="float-right font-weight-bold">
@@ -516,12 +493,12 @@ export const LocationFilter = ({ MicrosoftRef, mapRef, changeLocation }) => {
   }, [search, locations]);
 
   return loading ? (
-    <div className="locations w-100 bgPrimary ml-lg-3">
+    <div className={`${styles.locations} w-100 bgPrimary ml-lg-3 `}>
       <Loader />
     </div>
   ) : (
-    <Card className="locations  bgPrimary  ml-lg-3">
-      <div className=" border-bottom-1 mx-3 filter">
+    <Card className={`${styles.locations}  bgPrimary  ml-lg-3`}>
+      <div className={`${styles.filter} border-bottom-1 mx-3 `}>
         <div className="h5 font-weight-bold">Browse</div>
         <InputGroup className="">
           <FormControl
@@ -538,7 +515,7 @@ export const LocationFilter = ({ MicrosoftRef, mapRef, changeLocation }) => {
         </InputGroup>
         <div>{location}</div>
       </div>
-      <div className="w-100 places">
+      <div className={`${styles.places} w-100 `}>
         <div className="mx-3">
           {searchResults.map((item, index) => (
             <Button

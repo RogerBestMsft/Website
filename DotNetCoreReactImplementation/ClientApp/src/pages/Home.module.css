@@ -1,0 +1,23 @@
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.landing {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+.hero {
+  height: 100%;
+}
+
+.meetCora {
+  background: #0a1624;
+}
+
+.welcomePicture{
+    object-fit: cover;
+}

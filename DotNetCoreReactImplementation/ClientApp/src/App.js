@@ -1,9 +1,14 @@
 import React from "react";
-import { Home } from "./components/Home";
-import { MapVisualization } from "./components/MapVisualization";
+
+import { Home } from "./pages/Home";
+import { Faq } from "./pages/Faq";
+import { Privacy } from "./pages/Privacy";
+import { MapVisualization } from "./pages/MapVisualization";
+import { ErrorPage } from "./pages/ErrorPage";
+
 import { Switch, Route } from "react-router-dom";
 
-import "./custom.css";
+import "./App.css";
 
 export const App = () => {
   return (
@@ -11,13 +16,20 @@ export const App = () => {
       <Route exact path="/">
         <Home />
       </Route>
+      <Route exact path="/home">
+        <Home />
+      </Route>
+      <Route exact path="/privacy">
+        <Privacy />
+      </Route>
+      <Route exact path="/faq">
+        <Faq />
+      </Route>
       <Route path="/map">
         <MapVisualization />
       </Route>
       <Route path="*">
-        <div>
-          <h1>Error 404: Page Not Found!</h1>
-        </div>
+        <ErrorPage />
       </Route>
     </Switch>
   );
