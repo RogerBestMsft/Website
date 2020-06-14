@@ -21,16 +21,19 @@ export const AppBar = () => {
           <Image src={logo} className="h-100" alt="CORAbot logo" />
         </Navbar.Brand>
         <Nav className="">
-          <Nav.Link as={Link} to="/home">
+          <Nav.Link as={Link} to="/about">
             About
           </Nav.Link>
-          <Nav.Link as={Link} to="/home">
-            Team
+          <Nav.Link as={Link} to="/partners">
+            Partner Program
           </Nav.Link>
           <Nav.Link as={Link} to="/map">
-            Resource
+            Resources
           </Nav.Link>
-          <Button variant="primary">Contact</Button>
+          <Nav.Link as={Link} to="/needs">
+            Needs
+          </Nav.Link>
+          <Button as={Link} to="/contact" variant="primary">Contact</Button>
         </Nav>
       </Navbar>
     </div>

@@ -1,23 +1,22 @@
 .pageContainer {
   display: flex;
   flex-direction: column;
-}
-
-.landing {
-  display: flex;
-  flex-direction: column;
+  overflow-y: auto;
   height: 100vh;
   width: 100vw;
 }
 
+
 .hero {
-  height: 100%;
+  flex:auto;
 }
 
 .meetCora {
   background: #0a1624;
 }
 
-.welcomePicture{
+.colImage{
+  height: 100%;
+  width: 100%;
     object-fit: cover;
 }

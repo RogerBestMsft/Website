@@ -1,7 +1,7 @@
 ﻿import React from "react";
 import { Link } from "react-router-dom";
 import { AppBar } from "../components/AppBar";
-export const Privacy = () => {
+export const PrivacyPage = () => {
   return (
     <div>
       <AppBar></AppBar>

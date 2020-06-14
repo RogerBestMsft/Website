@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { AppBar } from "../components/AppBar";
 
-export const Faq = () => {
+export const FaqPage = () => {
   return (
     <div>
     <AppBar></AppBar>

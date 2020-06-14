@@ -17,6 +17,8 @@ import pushpinInvert from "../assets/Pin Invertcropped.svg";
 
 import styles from "./MapVisualization.module.css";
 
+//TODO: Comment this file more and refractor code
+
 export const MapVisualization = () => {
   const MicrosoftRef = useRef();
   const mapRef = useRef();
@@ -296,7 +298,7 @@ export const BingMaps = ({ MicrosoftRef, mapRef, setShow }) => {
       if (pushpin.metadata) {
         const { title, category, quantity, description } = pushpin.metadata;
 
-        //TODO: try inject the htmal via js
+        //TODO: try inject the html via js
         infoBoxRef.current.setOptions({
           location: pushpin.getLocation(),
           title: `${category} : ${title}  | ${quantity}`,
@@ -368,7 +370,12 @@ export const BingMaps = ({ MicrosoftRef, mapRef, setShow }) => {
     };
 
     loop();
+    return () => {
+      //TODO: find a way to unload map before page changes
+      mapRef.current=null;
+    }
   }, [MicrosoftRef, mapRef]);
+ 
 
   return (
     <div className={`${styles.map} h-100 w-100 d-flex`}>

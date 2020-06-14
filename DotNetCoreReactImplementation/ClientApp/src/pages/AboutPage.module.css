@@ -1,0 +1,36 @@
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  height: 100vh;
+  width: 100vw;
+}
+
+.titleBarLeft,
+.titleBarRight {
+  color: var(--color-primary);
+  align-items: center;
+}
+
+.title{
+  margin: 5%;
+}
+
+.titleBarRight::before,
+.titleBarLeft::after{
+  content: " ";
+  display: block;
+  flex:auto;
+  height: 0px;
+  background: var(--color-primary);
+
+}
+
+.titleBarLeft::before,
+.titleBarRight::after {
+  content: " ";
+  display: block;
+  flex:auto;
+  height: 1px;
+  background: var(--color-primary);
+}
