@@ -1,19 +1,20 @@
 import React from "react";
-
-import { HomePage } from "./pages/HomePage";
-import { AboutPage } from "./pages/AboutPage";
-import { FaqPage } from "./pages/FaqPage";
-import { ContactPage } from "./pages/ContactPage";
-import { PrivacyPage } from "./pages/PrivacyPage";
-import { MapVisualization } from "./pages/MapVisualization";
-import { LearnMorePage } from "./pages/LearnMorePage";
-import { PartnersPage } from "./pages/PartnersPage";
-import { NeedsPage } from "./pages/NeedsPage";
-import { ErrorPage } from "./pages/ErrorPage";
-
-import { Switch, Route } from "react-router-dom";
-
+import { Route, Switch } from "react-router-dom";
 import "./App.css";
+import { AboutPage } from "./pages/AboutPage";
+import { ContactPage } from "./pages/ContactPage";
+import { ErrorPage } from "./pages/ErrorPage";
+import { FaqPage } from "./pages/FaqPage";
+import { HomePage } from "./pages/HomePage";
+import { LandingPage } from "./pages/LandingPage";
+import { LearnMorePage } from "./pages/LearnMorePage";
+import { MapVisualization } from "./pages/MapVisualization";
+import { NeedsPage } from "./pages/NeedsPage";
+import { PartnersPage } from "./pages/PartnersPage";
+import { PrivacyPage } from "./pages/PrivacyPage";
+
+
+
 
 /*
 .########..########...#######........##.########..######..########....########..#######..########...#######...######.
@@ -25,17 +26,17 @@ import "./App.css";
 .##........##.....##..#######...######..########..######.....##..........##.....#######..########...#######...######.
 */
 
-//TODO: change split screens of text and picture from col to div and floats
-//TODO: change the column layout of memberys and advisors in  about page
+//TODO: change the column layout of members and advisors in  about page
 //TODO: fix map grid
 //TODO: add tests
+//TODO: use semantic html and address accessability
 //TODO: build mobile view of pages
 
 export const App = () => {
   return (
     <Switch>
       <Route exact path="/">
-        <HomePage />
+        <LandingPage />
       </Route>
       <Route exact path="/home">
         <HomePage />

@@ -1,25 +1,22 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-
+import React from "react";
 import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
 import Image from "react-bootstrap/Image";
-
+import Row from "react-bootstrap/Row";
+import { Link } from "react-router-dom";
+import crowdImage from "../assets/crowd.png";
+import mapImage from "../assets/map-screenshot.png";
+import jorge from "../assets/old-man-portrait 2.png";
 import { AppBar } from "../components/AppBar";
 import { Footer } from "../components/Footer";
-
-import jorge from "../assets/old-man-portrait 2.png";
-import mapImage from "../assets/map-screenshot.png"
-import crowdImage from "../assets/crowd.png"
-
 import styles from "./HomePage.module.css";
 
 export const HomePage = () => {
   return (
-    <main className={`${styles.pageContainer}`}>
-        <AppBar></AppBar>
+    <>
+      <AppBar></AppBar>
+      <Container fluid as="main">
         <Row className={styles.hero}>
           <Col
             className={`${styles.meetCora} p-0 d-flex flex-column justify-content-center align-text`}
@@ -58,7 +55,6 @@ export const HomePage = () => {
                 nulla pariatur. Excepteur sint occaecat cupidatat non proident,
                 sunt in culpa qui officia deserunt mollit anim id est laborum.
               </p>
-              
             </Container>
           </Col>
 
@@ -67,8 +63,6 @@ export const HomePage = () => {
           </Col>
         </Row>
         <Row className={styles.hero}>
-          
-
           <Col className="p-0 h-100">
             <Image className={styles.colImage} src={crowdImage} />
           </Col>
@@ -86,11 +80,11 @@ export const HomePage = () => {
                 nulla pariatur. Excepteur sint occaecat cupidatat non proident,
                 sunt in culpa qui officia deserunt mollit anim id est laborum.
               </p>
-              
             </Container>
           </Col>
         </Row>
-        <Footer></Footer>
-    </main>
+      </Container>
+      <Footer></Footer>
+    </>
   );
 };

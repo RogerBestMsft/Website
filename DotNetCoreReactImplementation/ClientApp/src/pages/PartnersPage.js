@@ -3,18 +3,15 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
-import { Link } from "react-router-dom";
 import { AppBar } from "../components/AppBar";
 import { Footer } from "../components/Footer";
-import { Profile } from "../components/Profile";
-
-import styles from "./PartnersPage.module.css";
 
 export const PartnersPage = () => {
   return (
-    <main className={`${styles.pageContainer}`}>
-        <AppBar></AppBar>
-        <Row className={styles.content}>
+    <>
+      <AppBar></AppBar>
+      <Container fluid as="main">
+        <Row as="section">
           <Container className="  ">
             <h1>Partner Program</h1>
             <p>
@@ -36,28 +33,39 @@ export const PartnersPage = () => {
             </p>
           </Container>
         </Row>
-        <Row className={`${styles.form} text-light backgroundPrimary `}>
+        <Row className={` text-light  backgroundPrimary p-5 `}>
           <Container>
-            <Form>
+            <h2>Partner Sign Up</h2>
+            <p>
+              Interested in signing your organization for the CORA Parnter
+              Program? Fill out the form below!
+            </p>
+            <Form className="text-left">
               <Form.Group controlId="Name">
                 <Form.Label>Name</Form.Label>
                 <Form.Control type="text" />
               </Form.Group>
               <Form.Group controlId="email">
                 <Form.Label>Email</Form.Label>
-                <Form.Check type="email" />
+                <Form.Control type="email" />
               </Form.Group>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Message</Form.Label>
                 <Form.Control as="textarea" />
               </Form.Group>
-              <Button variant="secondary"  type="submit">
+              <Button
+                variant="secondary"
+                className="m-auto w-75"
+                block
+                type="submit"
+              >
                 Send Message
               </Button>
             </Form>
           </Container>
         </Row>
-        <Footer></Footer>
-    </main>
+      </Container>
+      <Footer></Footer>
+    </>
   );
 };
