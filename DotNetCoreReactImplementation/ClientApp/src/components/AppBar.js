@@ -7,7 +7,7 @@ import Image from "react-bootstrap/Image";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
 
-import styles from "./AppBar.module.css"
+import styles from "./AppBar.module.css";
 import logo from "../assets/coraLogo.svg";
 
 export const AppBar = () => {
@@ -33,7 +33,7 @@ export const AppBar = () => {
             Resources
           </Nav.Link>
           <Nav.Link as={Link} to="/needs">
-            Needs
+            Satisfying Needs
           </Nav.Link>
           <Button as={Link} to="/contact" variant="primary">
             Contact

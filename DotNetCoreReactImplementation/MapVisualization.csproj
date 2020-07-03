@@ -11,6 +11,7 @@
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.2"/>
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.8.0"/>
     <PackageReference Include="SendGrid" Version="*"/>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="*"/>
   </ItemGroup>
   <ItemGroup>
     <Content Remove="$(SpaRoot)**"/>

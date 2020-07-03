@@ -1,20 +1,16 @@
-import React, { useEffect, useState, useRef } from "react";
-
-import { polygon, pointGrid, bbox } from "@turf/turf";
-import { Link } from "react-router-dom";
-
-import { AppBar } from "../components/AppBar";
-
+import { bbox, pointGrid, polygon } from "@turf/turf";
+import React, { useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
-import InputGroup from "react-bootstrap/InputGroup";
-import FormControl from "react-bootstrap/FormControl";
 import Card from "react-bootstrap/Card";
+import FormControl from "react-bootstrap/FormControl";
+import InputGroup from "react-bootstrap/InputGroup";
 import Spinner from "react-bootstrap/Spinner";
 import Toast from "react-bootstrap/Toast";
-
-import pushpin from "../assets/Pinscropped.svg";
+import { Link } from "react-router-dom";
 import pushpinInvert from "../assets/Pin Invertcropped.svg";
-
+import pushpin from "../assets/Pinscropped.svg";
+import { AppBar } from "../components/AppBar";
+import { Footer } from "../components/Footer";
 import styles from "./MapVisualization.module.css";
 
 //TODO: Comment this file more and refractor code
@@ -27,7 +23,6 @@ export const MapVisualization = () => {
   const [show, setShow] = useState(true);
 
   const changeLocation = (location) => {
-    console.log("change location was called", location);
     if (location !== "" || location !== null || location !== undefined) {
       setLocation(location);
     }
@@ -59,6 +54,7 @@ export const MapVisualization = () => {
         </Button>
         {/* <AlertAnon show={show} setShow={setShow}></AlertAnon> */}
       </div>
+      <Footer></Footer>
     </div>
   );
 };
@@ -96,7 +92,6 @@ export const TopBar = ({ location }) => {
 
 export const BingMaps = ({ MicrosoftRef, mapRef, setShow }) => {
   const resourcesRef = useRef({});
-  const needsRef = useRef({});
   const infoBoxRef = useRef();
   const bingMapsApiKey = useRef("");
   const [loading, setLoading] = useState(false);
@@ -170,7 +165,6 @@ export const BingMaps = ({ MicrosoftRef, mapRef, setShow }) => {
       };
       const combine = (resources, needs) => {
         // Unique set of key in  both resources and needs
-        console.count("combine");
         delete resources.null;
         delete needs.null;
         const uniqueKeys = [
@@ -179,7 +173,6 @@ export const BingMaps = ({ MicrosoftRef, mapRef, setShow }) => {
         let result = {};
         for (const key of uniqueKeys) {
           result[key] = [...(resources[key] ?? []), ...(needs[key] ?? [])];
-          console.log("keys", result);
         }
 
         return result;
@@ -277,17 +270,12 @@ export const BingMaps = ({ MicrosoftRef, mapRef, setShow }) => {
                 );
                 //Add the apushpin to the map
                 pinsList.push(pushpinResource);
-                console.count("pushpin added");
               }
             }
             mapRef.current.entities.push(data.results[0].Polygons[0]);
           },
           polygonOptions,
-          function errCallback(callbackState, networkStatus, statusMessage) {
-            console.log(callbackState);
-            console.log(networkStatus);
-            console.log(statusMessage);
-          }
+          function errCallback(callbackState, networkStatus, statusMessage) {}
         );
       }
       return pinsList;
@@ -372,10 +360,9 @@ export const BingMaps = ({ MicrosoftRef, mapRef, setShow }) => {
     loop();
     return () => {
       //TODO: find a way to unload map before page changes
-      mapRef.current=null;
-    }
+      mapRef.current = null;
+    };
   }, [MicrosoftRef, mapRef]);
- 
 
   return (
     <div className={`${styles.map} h-100 w-100 d-flex`}>
@@ -458,7 +445,6 @@ export const LocationFilter = ({ MicrosoftRef, mapRef, changeLocation }) => {
         },
         errorCallback: (e) => {
           //If there is an error, alert the user about it.
-          console.log("No results found.");
         },
       };
 

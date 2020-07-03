@@ -1,13 +1,17 @@
 import React from "react";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
 import { AppBar } from "../components/AppBar";
 
 export const ErrorPage = () => {
   return (
-    <div>
+    <>
       <AppBar></AppBar>
-      <div>
-        <h1>Error 404: Page Not Found!</h1>
-      </div>
-    </div>
+      <Container fluid as="main">
+        <Row as="section">
+          <h1>Error 404: Page Not Found!</h1>
+        </Row>
+      </Container>
+    </>
   );
 };

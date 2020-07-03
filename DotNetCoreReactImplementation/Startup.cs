@@ -2,7 +2,6 @@ using MapVisualization.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
-using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -57,6 +56,7 @@ namespace MapVisualization
             services.AddCors(options => { options.AddPolicy(name: MyAllowSpecificOrigins, builder => { builder.WithOrigins("https://localhost:44359/"); }); });
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddControllersWithViews();
+            services.AddMvc().AddNewtonsoftJson();
             services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
 
 

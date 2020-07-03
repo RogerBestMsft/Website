@@ -1,18 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { AppBar } from "../components/AppBar";
 import { Footer } from "../components/Footer";
+import { useForm } from "react-hook-form";
 
 export const PartnersPage = () => {
+  const [partnerSuccess, setPartnerSuccess] = useState(false);
+  const [partnerFail, setPartnerFail] = useState(false);
+  const { register, handleSubmit } = useForm();
+  const partner = async (data) => {
+    //TODO: debug this because sometimes it  hangs and the  fetch does go through
+    const response = await fetch(`forms/partner`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const result = await response.json();
+    result.partnered ? setPartnerSuccess(true) : setPartnerFail(true);
+  };
   return (
     <>
       <AppBar></AppBar>
       <Container fluid as="main">
         <Row as="section">
-          <Container className="  ">
+          <Container className=" p-5 ">
             <h1>Partner Program</h1>
             <p>
               The CORA Partners Program connects with non-profits and
@@ -40,18 +56,30 @@ export const PartnersPage = () => {
               Interested in signing your organization for the CORA Parnter
               Program? Fill out the form below!
             </p>
-            <Form className="text-left">
+            <Form onSubmit={handleSubmit(partner)} className="text-left">
               <Form.Group controlId="Name">
                 <Form.Label>Name</Form.Label>
-                <Form.Control type="text" />
+                <Form.Control
+                  name="Name"
+                  ref={register({ required: true, minLength: 1 })}
+                  type="text"
+                />
               </Form.Group>
               <Form.Group controlId="email">
                 <Form.Label>Email</Form.Label>
-                <Form.Control type="email" />
+                <Form.Control
+                  name="Email"
+                  ref={register({ required: true, minLength: 1 })}
+                  type="email"
+                />
               </Form.Group>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Message</Form.Label>
-                <Form.Control as="textarea" />
+                <Form.Control
+                  name="Details"
+                  ref={register({ required: true, minLength: 1 })}
+                  as="textarea"
+                />
               </Form.Group>
               <Button
                 variant="secondary"
@@ -61,6 +89,15 @@ export const PartnersPage = () => {
               >
                 Send Message
               </Button>
+              {partnerSuccess && (
+                <span>You have been added to our mailing list</span>
+              )}
+              {partnerFail && (
+                <span>
+                  Sorry something went wrong we were unable to add you to our
+                  mailing list
+                </span>
+              )}
             </Form>
           </Container>
         </Row>

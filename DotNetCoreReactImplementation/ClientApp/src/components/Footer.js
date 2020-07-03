@@ -17,16 +17,16 @@ export const Footer = () => {
 
   const { register, handleSubmit, errors } = useForm();
   const subscribe = async (data) => {
-    console.log(data);
-
+    //TODO: debug this because sometimes it  hangs and the  fetch does go through
     const response = await fetch(`forms/subscribe`, {
       method: "post",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(data.email),
+      body: JSON.stringify(data),
     });
     const result = await response.json();
+
     result.subscribed ? setSubscribedSuccess(true) : setSubscribedFail(true);
   };
 
@@ -38,16 +38,16 @@ export const Footer = () => {
             <h4>About CORAbot</h4>
             <ul>
               <li>
-                <Link>About CORAbot</Link>
+                <Link to="/">About CORAbot</Link>
               </li>
               <li>
-                <Link>Affiliates</Link>
+                <Link to="/">Affiliates</Link>
               </li>
               <li>
-                <Link>Sitemap</Link>
+                <Link to="/">Sitemap</Link>
               </li>
               <li>
-                <Link>CORA</Link>
+                <Link to="/">CORA</Link>
               </li>
             </ul>
           </Col>
@@ -55,16 +55,16 @@ export const Footer = () => {
             <h4>Help & FAQs</h4>
             <ul>
               <li>
-                <Link></Link>
+                <Link to="/"></Link>
               </li>
               <li>
-                <Link>Affiliates</Link>
+                <Link to="/">Affiliates</Link>
               </li>
               <li>
-                <Link>Sitemap</Link>
+                <Link to="/">Sitemap</Link>
               </li>
               <li>
-                <Link>CORA</Link>
+                <Link to="/">CORA</Link>
               </li>
             </ul>
           </Col>
@@ -72,16 +72,16 @@ export const Footer = () => {
             <h4>Something Else Here</h4>
             <ul>
               <li>
-                <Link>Something</Link>
+                <Link to="/">Something</Link>
               </li>
               <li>
-                <Link>Something</Link>
+                <Link to="/">Something</Link>
               </li>
               <li>
-                <Link>Something</Link>
+                <Link to="/">Something</Link>
               </li>
               <li>
-                <Link>Something</Link>
+                <Link to="/">Something</Link>
               </li>
             </ul>
           </Col>
@@ -90,12 +90,13 @@ export const Footer = () => {
           <Col>
             <Form onSubmit={handleSubmit(subscribe)}>
               <Form.Group as={Row} controlId="">
-                <Form.Label as={Col}>Sign up for CORAbot Emails</Form.Label>
                 <Col>
+                  <Form.Label>Sign up for CORAbot Emails</Form.Label>
+
                   <InputGroup className="mb-2 mr-sm-2">
                     <Form.Control
                       ref={register({ required: true, minLength: 1 })}
-                      name="email"
+                      name="Email"
                       type="email"
                       placeholder="Email address"
                     />
@@ -120,8 +121,9 @@ export const Footer = () => {
           <Col>
             <Form>
               <Form.Group as={Row} controlId="">
-                <Form.Label as={Col}>Choose Region:</Form.Label>
                 <Col>
+                  <Form.Label>Choose Region:</Form.Label>
+
                   <Dropdown>
                     <Dropdown.Toggle id="dropdown-basic">
                       {region}

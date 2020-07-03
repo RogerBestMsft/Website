@@ -5,14 +5,14 @@ import Row from "react-bootstrap/Row";
 import { Link } from "react-router-dom";
 import { AppBar } from "../components/AppBar";
 import { Footer } from "../components/Footer";
-
+import styles from "./FaqPage.module.css";
 export const FaqPage = () => {
   return (
     <>
       <AppBar></AppBar>
       <Container fluid as="main">
         <Row as="section" className=" text-light backgroundPrimary">
-          <Container className="p-5">
+          <Container className="p-5 text-left">
             <h2>Frequently Asked Questions</h2>
             <p>
               Since the launch of Project CORA and the creation of CORAbot, we
@@ -24,7 +24,7 @@ export const FaqPage = () => {
           </Container>
         </Row>
         <Row as="section">
-          <Container className="p-5">
+          <Container className="p-5 text-left">
             <h3>
               Is CORAbot only for COVID or can I use it for other supplies?
             </h3>
@@ -38,7 +38,7 @@ export const FaqPage = () => {
           </Container>
         </Row>
         <Row as="section">
-          <Container className="p-5">
+          <Container className="p-5 text-left">
             <h3>What kind of languages do you support?</h3>
             <p>
               CORAbot, with its natural language SMS text bot, is fluent in more
@@ -50,7 +50,7 @@ export const FaqPage = () => {
           </Container>
         </Row>
         <Row as="section">
-          <Container className="p-5">
+          <Container className="p-5 text-left">
             <h3>What organizations have already deployed the solution?</h3>
             <p>
               Our partner, Team Rubicon, has deployed “Agent Remi” to help
@@ -64,7 +64,7 @@ export const FaqPage = () => {
           </Container>
         </Row>
         <Row as="section">
-          <Container className="p-5">
+          <Container className="p-5 text-left">
             <h3>Who is the next partner/client following Team Rubicon?</h3>
             <p>
               There are others helping in the pandemic who can also use help.
@@ -78,7 +78,7 @@ export const FaqPage = () => {
           </Container>
         </Row>
         <Row as="section">
-          <Container className="p-5">
+          <Container className="p-5 text-left">
             <h3> How will you keep the users’ data private? </h3>
             <p>
               Privacy is one of our key design principles and we wired it into
@@ -93,7 +93,7 @@ export const FaqPage = () => {
           </Container>
         </Row>
         <Row as="section">
-          <Container className="p-5">
+          <Container className="p-5 text-left">
             <h3>What about accessibility?</h3>
             <p>
               We want CORAbot to help as many people as possible.This is why we
@@ -105,7 +105,7 @@ export const FaqPage = () => {
           </Container>
         </Row>
         <Row as="section">
-          <Container className="p-5">
+          <Container className="p-5 text-left">
             <h3>Is it okay if I take the solution and sell it?</h3>
             <p>
               No. The Project CORA team created CORAbot to assist with NGO
@@ -117,9 +117,11 @@ export const FaqPage = () => {
           </Container>
         </Row>
         <Row as="section">
-          <Container className="p-5">
-            <h2>Your Question Not Answered?</h2>
-            <p>
+          <Container className={`p-5`}>
+            <h2 className={`${styles.textColorPrimary} `}>
+              Your Question Not Answered?
+            </h2>
+            <p className={`${styles.textColorPrimary} `}>
               Reach out to us by filling out the contact form, and we will be
               back in touch as soon as we can!
             </p>
