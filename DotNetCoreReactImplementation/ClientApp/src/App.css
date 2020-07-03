@@ -4,10 +4,6 @@
   overflow-y: auto;
   height: 100%;
   width: 100%;
-  padding-top: 2rem;
-}
-.window-height{
-  height: calc(100vh - 2rem);
 }
 
 .infobox-body {
