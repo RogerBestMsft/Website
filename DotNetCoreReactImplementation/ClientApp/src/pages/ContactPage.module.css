@@ -3,8 +3,20 @@
   flex: auto
 }
 
+.colImageWrapper {
+  background-blend-mode: overlay;
+  background-repeat: no-repeat;
+}
+
 .colImage{
   height: 100%;
   width: 100%;
-    object-fit: cover;
+  object-fit: cover;
+  opacity: 0;
+}
+
+.colFormHeader {
+  font-weight: bold;
+  color: white;
+  padding: 10% 0;
 }

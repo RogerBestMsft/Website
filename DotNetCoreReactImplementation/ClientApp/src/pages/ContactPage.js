@@ -32,11 +32,20 @@ export const ContactPage = () => {
     <>
       <AppBar></AppBar>
       <Container fluid as="main">
-        <Row as="section" className={`${styles.form} p-5 backgroundSecondary`}>
-          <Col sm={0} md={6}>
-            <Image className={styles.colImage} src={crowdImage} />
+        <Row as="section" className={`${styles.form} backgroundSecondary`}>
+          {/* 
+           * Sets the div bg and adds blue color filter
+           * Inner image sets height
+           * Actual filter color TBD
+           */}
+          <Col sm={0} md={6} lg={6} className={styles.colImageWrapper} style={{
+            'background': `url(${crowdImage}), rgba(4, 191, 216, 0.5)`,
+            'backgroundSize': 'cover'
+          }}>
+            <Image className={styles.colImage} src={crowdImage}/>
           </Col>
-          <Col sm={12} md={6} lg={5} className={` p-5`}>
+          <Col sm={12} md={6} lg={6} className={` p-5`}>
+            <h2 className={styles.colFormHeader}>Have some questions?</h2>
             <Form onSubmit={handleSubmit(contact)}>
               <Form.Group controlId="firstName">
                 <Form.Control
