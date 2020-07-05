@@ -40,19 +40,17 @@ jobs:
         dotnet build --configuration Release --output '${{ env.AZURE_OUTPUT_PATH }}'
         popd
 
-    # Setup Node.js
+    # Setup Node.js, Build the project
     - name: Use Node.js ${{ env.NODE_VERSION }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ env.NODE_VERSION }}
-
-    - name: npm install, build, and test
-      # Build and test the project, then deploy to Azure Web App.
-    - run: pushd '${{ env.AZURE_SOURCE_PATH }}/ClientApp'
-    - run: npm run build --if-present
-    - run: npm install
-    - run: pushd '${{ env.AZURE_SOURCE_PATH }}/ClientApp'
-    - run: copy '${{ env.AZURE_SOURCE_PATH }}/ClientApp/build' './${{ env.AZURE_OUTPUT_PATH }}'
+      run: |
+        pushd '${{ env.AZURE_SOURCE_PATH }}/ClientApp'
+        npm run build --if-present
+        npm install
+        pushd '${{ env.AZURE_SOURCE_PATH }}/ClientApp'
+        copy '${{ env.AZURE_SOURCE_PATH }}/ClientApp/build' '${{ env.AZURE_OUTPUT_PATH }}'
               
     # Deploy the website to an Azure App Service    
     - name: Deploy bits to ProjectCoraBot website, cora.org
