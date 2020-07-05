@@ -51,8 +51,7 @@ jobs:
       # Build and test the project, then deploy to Azure Web App.
       pushd '${{ env.AZURE_SOURCE_PATH }}/ClientApp'
       npm install
-      npm run build --if-present
-      # Copy to Output Folder
+      npm run build
       copy '${{ env.AZURE_SOURCE_PATH }}/ClientApp/build' './${{ env.AZURE_OUTPUT_PATH }}'
               
     # Deploy the website to an Azure App Service    
