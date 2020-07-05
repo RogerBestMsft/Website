@@ -80,6 +80,7 @@ export const LearnMorePage = () => {
           }}>
             {stack.map((element) => (
               <Col>
+              <Link to={`${element.link ?? "/error"}`}>
                 <span style={{
                   'background': element.color,
                   'borderRadius': '15px 0 15px 0',
@@ -94,6 +95,7 @@ export const LearnMorePage = () => {
                 }}>
                   {element.name}
                 </div>
+                </Link>
               </Col>
             ))}
           </Row>

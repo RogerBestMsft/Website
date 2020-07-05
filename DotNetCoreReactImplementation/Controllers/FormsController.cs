@@ -19,7 +19,8 @@ namespace MapVisualization.Controllers
     {
         private readonly ILogger<DataController> logger;
 
-        private readonly ICosmosDbService cosmosDbService;
+        // will maybe use in the future to store form responses
+        //private readonly ICosmosDbService cosmosDbService;
 
         private readonly IConfiguration configuration;
 

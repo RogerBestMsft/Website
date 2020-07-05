@@ -5,7 +5,7 @@ import Card from "react-bootstrap/Card";
 import FormControl from "react-bootstrap/FormControl";
 import InputGroup from "react-bootstrap/InputGroup";
 import Spinner from "react-bootstrap/Spinner";
-import Toast from "react-bootstrap/Toast";
+import Alert from "react-bootstrap/Alert";
 import { Link } from "react-router-dom";
 import pushpinInvert from "../assets/Pin Invertcropped.svg";
 import pushpin from "../assets/Pinscropped.svg";
@@ -52,7 +52,7 @@ export const MapVisualization = () => {
         >
           Contact CORAbot
         </Button>
-        {/* <AlertAnon show={show} setShow={setShow}></AlertAnon> */}
+        <AlertAnon show={show} setShow={setShow}></AlertAnon>
       </div>
       <Footer></Footer>
     </div>
@@ -60,12 +60,10 @@ export const MapVisualization = () => {
 };
 const AlertAnon = ({ show, setShow }) => {
   return (
-    <Toast show={show} onClose={() => setShow(false)} delay={4000} autohide>
-      <Toast.Header closeButton>
-        <Toast.Title>Attention</Toast.Title>
-      </Toast.Header>
-      <Toast.body>
-        {" "}
+    <Alert variant="info" onClose={() => setShow(false)} dismissible>
+      <Alert.Heading>Attention</Alert.Heading>
+      <p>
+  
         Locations have been anonymized and are approximate. Read more in our
         <Link style={{ color: "white" }} to="/privacy">
           {" "}
@@ -75,8 +73,8 @@ const AlertAnon = ({ show, setShow }) => {
         <Link style={{ color: "white" }} to="/faq">
           FAQ's
         </Link>
-      </Toast.body>
-    </Toast>
+      </p>
+    </Alert>
   );
 };
 
@@ -362,7 +360,7 @@ export const BingMaps = ({ MicrosoftRef, mapRef, setShow }) => {
       //TODO: find a way to unload map before page changes
       mapRef.current = null;
     };
-  }, [MicrosoftRef, mapRef]);
+  }, [MicrosoftRef, mapRef, setShow]);
 
   return (
     <div className={`${styles.map} h-100 w-100 d-flex`}>
