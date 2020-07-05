@@ -14,7 +14,7 @@ env:
   AZURE_SOURCE_PATH: './DotNetCoreReactImplementation'    # set this to the path to your web app project, defaults to the repository root
   AZURE_OUTPUT_PATH: './output'    # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '3.1.201'              # set this to the dotnet version to use
-  NODE_VERSION: '8.x'
+  NODE_VERSION: '12.x'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -54,6 +54,8 @@ jobs:
         npm run build --if-present
         popd
         copy '${{ env.AZURE_SOURCE_PATH }}/ClientApp/build' '${{ env.AZURE_OUTPUT_PATH }}'
+      env:
+        CI: false
               
     # Deploy the website to an Azure App Service    
     - name: Deploy bits to ProjectCoraBot website, cora.org
