@@ -12,7 +12,7 @@ on:
 
 env:
   AZURE_SOURCE_PATH: './DotNetCoreReactImplementation/MapVisualization.sln'
-  AZURE_OUTPUT_PATH: './DotNetCoreReactImplementation/Output'
+  AZURE_OUTPUT_PATH: './DotNetCoreReactImplementation/Output/MapVisualization.zip'
   DOTNET_VERSION: '3.1.201'              # set this to the dotnet version to use
   NODE_VERSION: '12.x'
   CI: false
@@ -47,7 +47,7 @@ jobs:
       run: msbuild ${{ env.AZURE_SOURCE_PATH }} /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FileSystem
  
     # Deploy the website to an Azure App Service    
-    - name: Deploy bits to ProjectCoraBot website, cora.org
+    - name: Deploy bits to ProjectCoraBot website, corabot.org
       uses: Azure/webapps-deploy@v2.1
       with:
         # Name of the Azure Web App
