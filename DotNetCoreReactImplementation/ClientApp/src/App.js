@@ -23,7 +23,6 @@ import { PrivacyPage } from "./pages/PrivacyPage";
 .##........##.....##..#######...######..########..######.....##..........##.....#######..########...#######...######.
 */
 
-//TODO: change the column layout of members and advisors in  about page
 //TODO: fix map grid
 //TODO: add tests
 //TODO: use semantic html and address accessability

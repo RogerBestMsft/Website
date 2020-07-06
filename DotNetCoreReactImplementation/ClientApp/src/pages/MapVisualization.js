@@ -60,21 +60,21 @@ export const MapVisualization = () => {
 };
 const AlertAnon = ({ show, setShow }) => {
   return (
-    <Alert variant="info" onClose={() => setShow(false)} dismissible>
-      <Alert.Heading>Attention</Alert.Heading>
-      <p>
-  
-        Locations have been anonymized and are approximate. Read more in our
-        <Link style={{ color: "white" }} to="/privacy">
-          {" "}
-          Privacy Promise!
-        </Link>{" "}
-        Learn more in our{" "}
-        <Link style={{ color: "white" }} to="/faq">
-          FAQ's
-        </Link>
-      </p>
-    </Alert>
+    show && (
+      <Alert
+        
+        className={styles.anon}
+        onClose={() => setShow(false)}
+        dismissible
+      >
+        <Alert.Heading>Attention</Alert.Heading>
+        <p>
+          Locations have been anonymized and are approximate. Read more in our
+          <Link to="/privacy"> Privacy Promise!</Link> Learn more in our{" "}
+          <Link to="/faq">FAQ's</Link>
+        </p>
+      </Alert>
+    )
   );
 };
 
@@ -284,7 +284,6 @@ export const BingMaps = ({ MicrosoftRef, mapRef, setShow }) => {
       if (pushpin.metadata) {
         const { title, category, quantity, description } = pushpin.metadata;
 
-        //TODO: try inject the html via js
         infoBoxRef.current.setOptions({
           location: pushpin.getLocation(),
           title: `${category} : ${title}  | ${quantity}`,
@@ -352,15 +351,15 @@ export const BingMaps = ({ MicrosoftRef, mapRef, setShow }) => {
       loadMap(bingMapsApiKey.current);
       addPushpins();
       setLoading(false);
-      setShow(true);
     };
 
     loop();
     return () => {
       //TODO: find a way to unload map before page changes
       mapRef.current = null;
+      MicrosoftRef.current = null;
     };
-  }, [MicrosoftRef, mapRef, setShow]);
+  }, [MicrosoftRef, mapRef]);
 
   return (
     <div className={`${styles.map} h-100 w-100 d-flex`}>

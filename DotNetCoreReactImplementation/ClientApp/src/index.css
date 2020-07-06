@@ -15,6 +15,7 @@ body {
   overflow: hidden;
 }
 
+/* TODO: change the bootstrap colors to these and update styles accordingly  */
 html {
   --color-primary: #04bfd8;
   --color-secondary: #0a1624;

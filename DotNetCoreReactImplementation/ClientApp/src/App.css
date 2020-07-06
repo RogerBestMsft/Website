@@ -46,3 +46,7 @@ ul {
 .text-primary {
   color: var(--color-primary) !important;
 }
+
+a { 
+  color: white;
+}
