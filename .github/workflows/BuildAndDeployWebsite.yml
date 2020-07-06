@@ -15,7 +15,8 @@ env:
   AZURE_OUTPUT_PATH: './output'    # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '3.1.201'              # set this to the dotnet version to use
   NODE_VERSION: '12.x'
-
+  CI: false
+ 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -44,8 +45,6 @@ jobs:
  
     - name: Build and Publish Web App
       run: msbuild ${{ env.AZURE_SOURCE_PATH }} /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FileSystem
-      with:
-        CI: false
  
     # Deploy the website to an Azure App Service    
     - name: Deploy bits to ProjectCoraBot website, cora.org
