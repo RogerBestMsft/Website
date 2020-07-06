@@ -11,8 +11,8 @@ on:
     branches: [ master ]
 
 env:
-  AZURE_SOURCE_PATH: './DotNetCoreReactImplementation/MapVisualization.sln'    # set this to the path to your web app project, defaults to the repository root
-  AZURE_OUTPUT_PATH: './output'    # set this to the path to your web app project, defaults to the repository root
+  AZURE_SOURCE_PATH: './DotNetCoreReactImplementation/MapVisualization.sln'
+  AZURE_OUTPUT_PATH: './DotNetCoreReactImplementation/Output'
   DOTNET_VERSION: '3.1.201'              # set this to the dotnet version to use
   NODE_VERSION: '12.x'
   CI: false
