@@ -44,7 +44,7 @@ jobs:
       run: nuget restore '${{ env.AZURE_SOURCE_PATH }}'
  
     - name: Build and Publish Web App
-      run: msbuild ${{ env.AZURE_SOURCE_PATH }} /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FileSystem
+      run: msbuild ${{ env.AZURE_SOURCE_PATH }} /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FileSystem /p:DeployTarget=MSDeployPublish
  
     # Deploy the website to an Azure App Service    
     - name: Deploy bits to ProjectCoraBot website, corabot.org
