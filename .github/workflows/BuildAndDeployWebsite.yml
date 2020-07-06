@@ -12,7 +12,8 @@ on:
 
 env:
   AZURE_SOURCE_PATH: './DotNetCoreReactImplementation/MapVisualization.sln'
-  AZURE_OUTPUT_PATH: './DotNetCoreReactImplementation/Output/MapVisualization.zip'
+  MSBUILD_OUTPUT_PATH: './Output/Website.zip'
+  AZURE_OUTPUT_PATH: './DotNetCoreReactImplementation/Output/Website.zip'
   DOTNET_VERSION: '3.1.201'              # set this to the dotnet version to use
   NODE_VERSION: '12.x'
   CI: false
@@ -44,7 +45,7 @@ jobs:
       run: nuget restore '${{ env.AZURE_SOURCE_PATH }}'
  
     - name: Build and Publish Web App
-      run: msbuild ${{ env.AZURE_SOURCE_PATH }} /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FileSystem /p:DeployTarget=MSDeployPublish
+      run: msbuild ${{ env.AZURE_SOURCE_PATH }} /p:Configuration=Release /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:PackageLocation="${{ MSBUILD_OUTPUT_PATH }}"
  
     # Deploy the website to an Azure App Service    
     - name: Deploy bits to ProjectCoraBot website, corabot.org
