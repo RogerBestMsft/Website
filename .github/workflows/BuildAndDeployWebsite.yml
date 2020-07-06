@@ -50,7 +50,7 @@ jobs:
     - name: Zip the output folder to package for zip deploy to App Service
       uses: papeloto/action-zip@v1
       with:
-        files: '${{ env.MSBUILD_OUTPUT_PATH }}'
+        files: Output/
         dest: ${{ env.ZIP_OUTPUT_PATH }}
 
     - name: Debug Entry - upload webpackage zip
