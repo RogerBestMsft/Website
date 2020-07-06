@@ -12,8 +12,9 @@ on:
 
 env:
   AZURE_SOURCE_PATH: './DotNetCoreReactImplementation/MapVisualization.sln'
-  MSBUILD_OUTPUT_PATH: './Output/Website.zip'
-  AZURE_OUTPUT_PATH: './DotNetCoreReactImplementation/Output/Website.zip'
+  MSBUILD_OUTPUT_PATH: './Output'
+  ZIP_INPUT_PATH: './DotNetCoreReactImplementation/Output/*'
+  ZIP_OUTPUT_PATH: './WebsitePackage.zip'
   DOTNET_VERSION: '3.1.201'              # set this to the dotnet version to use
   NODE_VERSION: '12.x'
   CI: false
@@ -44,9 +45,21 @@ jobs:
     - name: Restore NuGet Packages
       run: nuget restore '${{ env.AZURE_SOURCE_PATH }}'
  
-    - name: Build and Publish Web App
-      run: msbuild ${{ env.AZURE_SOURCE_PATH }} /p:Configuration=Release /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:PackageLocation="${{ env.MSBUILD_OUTPUT_PATH }}"
- 
+    - name: Build Web App using MSBuild
+      run: msbuild ${{ env.AZURE_SOURCE_PATH }} /p:Configuration=Release /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:publishUrl=${{ env.MSBUILD_OUTPUT_PATH }}
+
+    - name: Zip the output folder to package for zip deploy to App Service
+    - uses: papeloto/action-zip@v1
+      with:
+        files: ${{ env.ZIP_INPUT_PATH }}
+        dest: ${{ env.ZIP_OUTPUT_PATH }}
+
+    - name: Debug Entry - upload webpackage zip
+    - uses: actions/upload-artifact@v1
+      with:
+        name: my-artifact
+        path: ${{ github.workspace }}/${{ env.ZIP_OUTPUT_PATH }}
+                  
     # Deploy the website to an Azure App Service    
     - name: Deploy bits to ProjectCoraBot website, corabot.org
       uses: Azure/webapps-deploy@v2.1
@@ -55,4 +68,4 @@ jobs:
         app-name: ProjejctCoraBot
         publish-profile: ${{ secrets.PROJECTCORAWEBSITE_PUBLISHPROFILE }}
         # Applies to Web App only: Path to package or folder. *.zip, *.war, *.jar or a folder to deploy
-        package: '${{ env.AZURE_OUTPUT_PATH }}'
+        package: '${{ env.ZIP_OUTPUT_PATH }}'
