@@ -15,6 +15,7 @@ env:
   AZURE_OUTPUT_PATH: './output'    # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '3.1.201'              # set this to the dotnet version to use
   NODE_VERSION: '12.x'
+  SOLUTION_FILE: 'MapVisualization.sln'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -33,30 +34,18 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    - name: 'Resolve Project Dependencies Using Dotnet'
-      shell: pwsh
-      run: |
-        pushd '${{ env.AZURE_SOURCE_PATH }}'
-        dotnet build --configuration Release --output '${{ env.AZURE_OUTPUT_PATH }}'
-        popd
-
-    # Setup Node.js
-    - name: Use Node.js ${{ env.NODE_VERSION }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-
-    # Build the client app & copy to output directory
-    - name: Build Client App
-      run: |
-        pushd '${{ env.AZURE_SOURCE_PATH }}/ClientApp'
-        npm install
-        npm run build --if-present
-        popd
-        copy '${{ env.AZURE_SOURCE_PATH }}/ClientApp/build' '${{ env.AZURE_OUTPUT_PATH }}'
-      env:
-        CI: false
-              
+    - name: Setup MSBuild Path
+      uses: warrenbuckley/Setup-MSBuild@v1
+       
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.2
+     
+    - name: Restore NuGet Packages
+      run: nuget restore ${{ env.SOLUTION_FILE }}
+ 
+    - name: Build and Publish Web App
+      run: msbuild ${{ env.SOLUTION_FILE }} /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FileSystem
+ 
     # Deploy the website to an Azure App Service    
     - name: Deploy bits to ProjectCoraBot website, cora.org
       uses: Azure/webapps-deploy@v2.1
@@ -65,4 +54,4 @@ jobs:
         app-name: ProjejctCoraBot
         publish-profile: ${{ secrets.PROJECTCORAWEBSITE_PUBLISHPROFILE }}
         # Applies to Web App only: Path to package or folder. *.zip, *.war, *.jar or a folder to deploy
-        package: './${{ env.AZURE_OUTPUT_PATH }}'
+        package: '${{ env.AZURE_OUTPUT_PATH }}'
