@@ -44,6 +44,8 @@ jobs:
  
     - name: Build and Publish Web App
       run: msbuild ${{ env.AZURE_SOURCE_PATH }} /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FileSystem
+      with:
+        CI: false
  
     # Deploy the website to an Azure App Service    
     - name: Deploy bits to ProjectCoraBot website, cora.org
