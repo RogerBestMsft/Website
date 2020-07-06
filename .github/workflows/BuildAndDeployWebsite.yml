@@ -13,6 +13,7 @@ on:
 env:
   AZURE_SOURCE_PATH: './DotNetCoreReactImplementation/MapVisualization.sln'
   MSBUILD_OUTPUT_PATH: './Output'
+  ZIP_INPUT_PATH: './DotNetCoreReactImplementation/Output/'
   ZIP_OUTPUT_PATH: './WebsitePackage.zip'
   DOTNET_VERSION: '3.1.201'              # set this to the dotnet version to use
   NODE_VERSION: '12.x'
@@ -50,7 +51,7 @@ jobs:
     - name: Zip the output folder to package for zip deploy to App Service
       uses: papeloto/action-zip@v1
       with:
-        files: Output/
+        files: ${{ env.ZIP_INPUT_PATH }}
         dest: ${{ env.ZIP_OUTPUT_PATH }}
 
     - name: Debug Entry - upload webpackage zip
