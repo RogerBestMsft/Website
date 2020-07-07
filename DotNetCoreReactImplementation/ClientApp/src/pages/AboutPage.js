@@ -11,6 +11,8 @@ import { Footer } from "../components/Footer";
 import { Profile } from "../components/Profile";
 import styles from "./AboutPage.module.css";
 
+import { ProfileSection } from "../components/ProfileSection";
+
 // Temporary data to test looks of profiles to be replaced
 const placeholder1 =
   "https://s3.amazonaws.com/uifaces/faces/twitter/cdavis565/128.jpg";
@@ -339,12 +341,7 @@ export const AboutPage = () => {
           <ProfileRows members={members} />
         </Container>
 
-        <Row className={`${styles.titleBarRight}  h2`}>
-          <span className={styles.title}>Advisors</span>
-        </Row>
-        <Container fluid className="justify-content-center">
-          <ProfileRows members={leaders} />
-        </Container>
+        <ProfileSection title={'Advisors'} profiles={leaders} />
       </Container>
       <Footer></Footer>
     </>
