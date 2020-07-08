@@ -30,118 +30,101 @@ export const Footer = () => {
     result.subscribed ? setSubscribedSuccess(true) : setSubscribedFail(true);
   };
 
+  const navLinks = [
+    {
+      header: 'About CORAbot',
+      links: [
+        { to: '/', text: 'Affiliates'},
+        { to: '/', text: 'Sitemap' },
+        { to: '/', text: 'CORA' }
+      ]
+    }, {
+      header: 'Help & FAQs',
+      links: [
+        { to: '/faq', text: 'FAQs' },
+        { to: '/', text: 'Accessibility' },
+        { to: '/contact', text: 'Contact Us' }
+      ]
+    }, {
+      header: 'Nonprofits & Partner Information',
+      links: [
+        { to: '/', text: 'Case Studies' },
+        { to: '/', text: 'Locations' },
+        { to: '/', text: 'Sign Up' }
+      ]
+    }
+  ];
+
   return (
     <footer className={styles.footer}>
       <Container className="text-light p-3">
-        <Row>
-          <Col>
-            <h4>About CORAbot</h4>
-            <ul>
-              <li>
-                <Link to="/">About CORAbot</Link>
-              </li>
-              <li>
-                <Link to="/">Affiliates</Link>
-              </li>
-              <li>
-                <Link to="/">Sitemap</Link>
-              </li>
-              <li>
-                <Link to="/">CORA</Link>
-              </li>
-            </ul>
-          </Col>
-          <Col>
-            <h4>Help & FAQs</h4>
-            <ul>
-              <li>
-                <Link to="/"></Link>
-              </li>
-              <li>
-                <Link to="/">Affiliates</Link>
-              </li>
-              <li>
-                <Link to="/">Sitemap</Link>
-              </li>
-              <li>
-                <Link to="/">CORA</Link>
-              </li>
-            </ul>
-          </Col>
-          <Col>
-            <h4>Something Else Here</h4>
-            <ul>
-              <li>
-                <Link to="/">Something</Link>
-              </li>
-              <li>
-                <Link to="/">Something</Link>
-              </li>
-              <li>
-                <Link to="/">Something</Link>
-              </li>
-              <li>
-                <Link to="/">Something</Link>
-              </li>
-            </ul>
-          </Col>
+        <Row className={styles.footerRow} style={{
+          'borderBottom': '1px solid white'
+        }}>
+          {navLinks.map((section, index) => (
+            <Col className={styles.footerCol} key={index}>
+              <h5>{section.header}</h5>
+              <ul>
+                {section.links.map((link, ind) => (
+                  <li key={`${index} ${ind}`}>
+                    <Link to={link.to}>
+                      {link.text}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </Col>
+          ))}
         </Row>
-        <Row>
-          <Col>
+        <Row className={styles.footerRow}>
+          <Col md={8}>
             <Form onSubmit={handleSubmit(subscribe)}>
-              <Form.Group as={Row} controlId="">
-                <Col>
-                  <Form.Label>Sign up for CORAbot Emails</Form.Label>
-
-                  <InputGroup className="mb-2 mr-sm-2">
-                    <Form.Control
-                      ref={register({ required: true, minLength: 1 })}
-                      name="Email"
-                      type="email"
-                      placeholder="Email address"
-                    />
-                    <InputGroup.Append>
-                      <Button type="submit">{">"}</Button>
-                    </InputGroup.Append>
-                  </InputGroup>
-                  {errors.email && <span>This field is required</span>}
-                  {subscribedSuccess && (
-                    <span>You have been added to our mailing list</span>
-                  )}
-                  {subscribedFail && (
-                    <span>
-                      Sorry something went wrong we were unable to add you to
-                      our mailing list
-                    </span>
-                  )}
-                </Col>
+              <Form.Group controlId="" className={styles.footerFormGroup}>
+                <Form.Label>Sign up for CORAbot Emails</Form.Label>
+                <InputGroup className="mb-2 mr-sm-2">
+                  <Form.Control
+                    ref={register({ required: true, minLength: 1 })}
+                    name="Email"
+                    type="email"
+                    placeholder="Email address"
+                  />
+                  <InputGroup.Append>
+                    <Button type="submit">{">"}</Button>
+                  </InputGroup.Append>
+                </InputGroup>
+                {errors.email && <span>This field is required</span>}
+                {subscribedSuccess && (
+                  <span>You have been added to our mailing list</span>
+                )}
+                {subscribedFail && (
+                  <span>
+                    Sorry something went wrong we were unable to add you to
+                    our mailing list
+                  </span>
+                )}
               </Form.Group>
             </Form>
           </Col>
-          <Col>
+          <Col md={4}>
             <Form>
-              <Form.Group as={Row} controlId="">
-                <Col>
-                  <Form.Label>Choose Region:</Form.Label>
-
-                  <Dropdown>
-                    <Dropdown.Toggle id="dropdown-basic">
-                      {region}
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                      <Dropdown.Item onClick={() => setRegion("United States")}>
-                        United States
-                      </Dropdown.Item>
-                      <Dropdown.Item onClick={() => setRegion("Italy")}>
-                        Italy
-                      </Dropdown.Item>
-                      <Dropdown.Item onClick={() => setRegion("Spain")}>
-                        Spain
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </Col>
+              <Form.Group controlId="" className={styles.footerFormGroup}>
+                <Form.Label>Choose Region:</Form.Label>
+                <Dropdown>
+                  <Dropdown.Toggle id="dropdown-basic">
+                    {region}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item onClick={() => setRegion("United States")}>
+                      United States
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={() => setRegion("Italy")}>
+                      Italy
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={() => setRegion("Spain")}>
+                      Spain
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </Form.Group>
             </Form>
           </Col>

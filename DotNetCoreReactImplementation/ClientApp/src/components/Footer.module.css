@@ -6,3 +6,41 @@
 a {
   color: white;
 }
+
+.footerRow {
+  padding: 1em 5%;
+}
+
+.footerCol {
+  font-size: smaller;
+}
+
+.footerCol h5 {
+  font-weight: bold;
+}
+
+.footerCol ul {
+  margin-block-start: 0;
+  margin-block-end: 0;
+  padding-inline-start: 0;
+}
+
+.footerCol li {
+  padding: 5px 0;
+}
+
+.footerFormGroup {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.footerFormGroup > label {
+  white-space: nowrap;
+  flex: 1 0 auto;
+}
+
+.footerFormGroup > div {
+  flex: 1 1 auto;
+  padding: 0 5%;
+}
