@@ -39,13 +39,20 @@ export const ContactPage = () => {
            * Actual filter color TBD
            */}
           <Col sm={0} md={6} lg={6} className={styles.colImageWrapper} style={{
-            'background': `url(${crowdImage}), rgba(4, 191, 216, 0.5)`,
-            'backgroundSize': 'cover'
+            'background': `url(${crowdImage}), rgba(4, 191, 216, 0.4)`,
+            'backgroundSize': 'cover',
+            'color': 'white',
+            'fontSize': '36px',
+            'lineHeight': '42px',
+            'fontWeight': 'bold',
+            'padding': '6em 6%'
           }}>
-            <Image className={styles.colImage} src={crowdImage}/>
+            The Project CORA team works with nonprofit and community organizations to help implement bots specific to their cause.
+            Connect with us if you have any questions or are interested in being our next partner.
+            {/* <Image className={styles.colImage} src={crowdImage}/> */}
           </Col>
           <Col sm={12} md={6} lg={6} className={` p-5`}>
-            <h2 className={styles.colFormHeader}>Have some questions?</h2>
+            <h2 className={styles.colFormHeader}>Contact Us</h2>
             <Form onSubmit={handleSubmit(contact)}>
               <Form.Group controlId="firstName">
                 <Form.Control

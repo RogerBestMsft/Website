@@ -17,17 +17,27 @@ export const HomePage = () => {
     <>
       <AppBar></AppBar>
       <Container fluid as="main">
+        <Row className={styles.hero}
+          style={{
+            'background': '#0A1624',
+            'color': 'white',
+            'justifyContent': 'center',
+            'padding': '5em 20%'
+          }}
+        >
+          <h1>What is CORAbot?</h1>
+          CORAbot, a Community Operations Resource Agent (CORA), is an SMS-bot designed to address one of the biggest
+          challenges communities face - how to connect those with needs to available resources. With a customizable
+          modular framework, CORAbot can accelerate any nonprofit or community organization’s long or short-term goals.
+        </Row>
         <Row className={styles.hero}>
           <Col
             className={`${styles.meetCora} p-0 d-flex flex-column justify-content-center align-text`}
           >
             <Container className="  text-light">
-              <h1>Meet, CORAbot.</h1>
-              <p>
-                A community operations resource agent working to address the
-                biggest challenges in the world, including how to connect those
-                with needs to resources.
-              </p>
+              <h1>
+                Learn how CORAbot can be customized for any cause.
+              </h1>
               <p>
                 <Button as={Link} to="/map" variant="primary">
                   Learn more
@@ -41,44 +51,18 @@ export const HomePage = () => {
           </Col>
         </Row>
         <Row className={styles.hero}>
+          <Col className="p-0 h-100">
+            <Image className={styles.colImage} src={mapImage} />
+          </Col>
           <Col
             className={`${styles.colText} p-0 d-flex flex-column justify-content-center align-text`}
           >
             <Container className="">
-              <h1>Lorem Ipsum</h1>
+              <h1>CORAbot’s map integration depicts currents needs and available resources</h1>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-            </Container>
-          </Col>
-
-          <Col className="p-0 h-100">
-            <Image className={styles.colImage} src={mapImage} />
-          </Col>
-        </Row>
-        <Row className={styles.hero}>
-          <Col className="p-0 h-100">
-            <Image className={styles.colImage} src={crowdImage} />
-          </Col>
-          <Col
-            className={`${styles.colText} p-0 d-flex flex-column justify-content-center align-text`}
-          >
-            <Container className="  ">
-              <h1>Lorem Ipsum</h1>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
+                <Button as={Link} to="/map" variant="primary">
+                  Learn more
+                </Button>
               </p>
             </Container>
           </Col>
