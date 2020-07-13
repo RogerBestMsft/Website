@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import { AppBar } from "../components/AppBar";
 import { Footer } from "../components/Footer";
 
+import { PageHeading } from "../components/PageHeading";
+
 import styles from "./LearnMorePage.module.css";
 
 export const LearnMorePage = () => {
@@ -76,49 +78,42 @@ export const LearnMorePage = () => {
   return (
     <>
       <AppBar></AppBar>
+      <PageHeading 
+        title={'The Technology Behind CORAbot'}
+        subtitle={'CORAbot was built using MS Bot Framework, with Twilio integration, supported by '
+          + 'Cosmos DB and Dynamics backend services. With triggers, the solution can instantly '
+          + ' match resource providers with the nearest person in need. CORAbot can also be plugged' 
+          + 'into pre-existing web-based applications such as Microsoft Teams or Dynamics via '
+          + 'connectors built by the Project CORA team.'}
+        invert={true}
+      />
       <Container fluid as="main">
-        <Row as="section">
-          <h2 style={{
-            'width': '100%',
-            'fontWeight': 'bold',
-            'padding': '5% 0 1.5em'
-          }}>
-            The Technology Behind CORAbot
-          </h2>
-          <p style={{
-            'padding': '0 15%'
-          }}>
-            CORAbot was built using MS Bot Framework with Twilio integration, supported by Cosmos DB and Dynamics backend services.
-            With triggers, the solution can instantly match resource providers with the nearest person in need.
-            CORAbot can also be plugged into pre-existing web-based applications such as Microsoft Teams or Dynamics via connectors built by the Project CORA team.
-          </p>
-          <Row as="div" style={{
-            'width': '100%',
-            'padding': '5% 15%'
-          }}>
-            {stack.map((element, index) => (
-              <Col key={index} onClick={() => setIndex(index)}>
-                <span className={styles.stackIcon} style={{'background': element.color}}>
-                  {element.icon}
-                </span>
-                <div className={styles.stackName}>
-                  {element.name}
-                </div>
-              </Col>
-            ))}
-          </Row>
-          <div style={{'width': '100%', 'padding': '3em 20%', 'background': 'rgba(4, 191, 216, 0.07)'}}>
-            <span className={styles.stackIcon} style={{'background': stack[activeIndex].color}}>
-              {stack[activeIndex].icon}
-            </span>
-            <div className={styles.stackName}>
-              {stack[activeIndex].name}
-            </div>
-            <div>
-              {stack[activeIndex].description}
-            </div>
-          </div>
+        <Row as="div" style={{
+          'width': '100%',
+          'padding': '5% 15%'
+        }}>
+          {stack.map((element, index) => (
+            <Col key={index} onClick={() => setIndex(index)}>
+              <span className={styles.stackIcon} style={{'background': element.color}}>
+                {element.icon}
+              </span>
+              <div className={styles.stackName}>
+                {element.name}
+              </div>
+            </Col>
+          ))}
         </Row>
+        <div style={{'width': '100%', 'padding': '3em 20%', 'background': 'rgba(4, 191, 216, 0.07)'}}>
+          <span className={styles.stackIcon} style={{'background': stack[activeIndex].color}}>
+            {stack[activeIndex].icon}
+          </span>
+          <div className={styles.stackName}>
+            {stack[activeIndex].name}
+          </div>
+          <div>
+            {stack[activeIndex].description}
+          </div>
+        </div>
       </Container>
       <Footer></Footer>
     </>
