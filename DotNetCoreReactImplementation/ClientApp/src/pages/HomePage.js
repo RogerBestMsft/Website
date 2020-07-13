@@ -12,40 +12,40 @@ import { AppBar } from "../components/AppBar";
 import { Footer } from "../components/Footer";
 import styles from "./HomePage.module.css";
 
+import Symbol from "../assets/Symbol.svg"; 
+
 export const HomePage = () => {
   return (
     <>
       <AppBar></AppBar>
       <Container fluid as="main">
-        <Row className={styles.hero}
+        <Row className={`${styles.hero} ${styles.banner}`}
           style={{
-            'background': '#0A1624',
-            'color': 'white',
-            'justifyContent': 'center',
-            'padding': '5em 20%'
+            'backgroundImage': `url(${Symbol})`
           }}
         >
           <h1>What is CORAbot?</h1>
-          CORAbot, a Community Operations Resource Agent (CORA), is an SMS-bot designed to address one of the biggest
-          challenges communities face - how to connect those with needs to available resources. With a customizable
-          modular framework, CORAbot can accelerate any nonprofit or community organization’s long or short-term goals.
+          <p>
+            CORAbot, a Community Operations Resource Agent (CORA), is an SMS-bot designed to address one of the biggest
+            challenges communities face - how to connect those with needs to available resources. With a customizable
+            modular framework, CORAbot can accelerate any nonprofit or community organization’s long or short-term goals.
+          </p>
         </Row>
         <Row className={styles.hero}>
           <Col
-            className={`${styles.meetCora} p-0 d-flex flex-column justify-content-center align-text`}
+            className={`${styles.meetCora} ${styles.colText} p-0 d-flex flex-column justify-content-center`}
           >
-            <Container className="  text-light">
-              <h1>
+            <Container>
+              <h2>
                 Learn how CORAbot can be customized for any cause.
-              </h1>
+              </h2>
               <p>
                 <Button as={Link} to="/map" variant="primary">
-                  Learn more
+                  Learn More
                 </Button>
               </p>
             </Container>
           </Col>
-
           <Col className="p-0 h-100 w-100">
             <Image className={styles.colImage} src={jorge} />
           </Col>
@@ -55,13 +55,18 @@ export const HomePage = () => {
             <Image className={styles.colImage} src={mapImage} />
           </Col>
           <Col
-            className={`${styles.colText} p-0 d-flex flex-column justify-content-center align-text`}
+            className={`${styles.map} ${styles.colText} p-0 d-flex flex-column justify-content-center align-text`}
+            style={{
+              'backgroundImage': `url(${Symbol})`
+            }}
           >
-            <Container className="">
-              <h1>CORAbot’s map integration depicts currents needs and available resources</h1>
+            <Container>
+              <h2>
+                CORAbot’s map integration depicts currents needs and available resources.
+              </h2>
               <p>
                 <Button as={Link} to="/map" variant="primary">
-                  Learn more
+                  Learn More
                 </Button>
               </p>
             </Container>

@@ -8,9 +8,9 @@ import { Footer } from "../components/Footer";
 
 import { PageHeading } from "../components/PageHeading";
 
-import styles from "./LearnMorePage.module.css";
+import styles from "./TechnologyPage.module.css";
 
-export const LearnMorePage = () => {
+export const TechnologyPage = () => {
 
   const [activeIndex, setIndex] = useState(0);
 
