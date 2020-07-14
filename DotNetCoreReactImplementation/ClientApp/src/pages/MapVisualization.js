@@ -97,7 +97,7 @@ export const BingMaps = ({ MicrosoftRef, mapRef, setShow }) => {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     const fetchBingMapsAPIKey = async () => {
-      const fetchKey = await fetch(`data/bingmapsapikey`);
+      const fetchKey = await fetch(`keys/bingmapsapi`);
       const result = await fetchKey.json();
 
       bingMapsApiKey.current = result.key;

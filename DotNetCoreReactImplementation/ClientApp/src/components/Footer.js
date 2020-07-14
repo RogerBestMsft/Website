@@ -32,44 +32,47 @@ export const Footer = () => {
 
   const navLinks = [
     {
-      header: 'About CORAbot',
+      header: "About CORAbot",
       links: [
-        { to: '/', text: 'Affiliates'},
-        { to: '/', text: 'Sitemap' },
-        { to: '/', text: 'CORA' }
-      ]
-    }, {
-      header: 'Help & FAQs',
+        { to: "/", text: "Affiliates" },
+        { to: "/", text: "Sitemap" },
+        { to: "/home", text: "CORA" },
+      ],
+    },
+    {
+      header: "Help & FAQs",
       links: [
-        { to: '/faq', text: 'FAQs' },
-        { to: '/', text: 'Accessibility' },
-        { to: '/contact', text: 'Contact Us' }
-      ]
-    }, {
-      header: 'Nonprofits & Partner Information',
+        { to: "/faq", text: "FAQs" },
+        { to: "/", text: "Accessibility" },
+        { to: "/contact", text: "Contact Us" },
+      ],
+    },
+    {
+      header: "Nonprofits & Partner Information",
       links: [
-        { to: '/', text: 'Case Studies' },
-        { to: '/', text: 'Locations' },
-        { to: '/', text: 'Sign Up' }
-      ]
-    }
+        { to: "/", text: "Case Studies" },
+        { to: "/", text: "Locations" },
+        { to: "/", text: "Sign Up" },
+      ],
+    },
   ];
 
   return (
     <footer className={styles.footer}>
       <Container className="text-light p-3">
-        <Row className={styles.footerRow} style={{
-          'borderBottom': '1px solid white'
-        }}>
+        <Row
+          className={styles.footerRow}
+          style={{
+            borderBottom: "1px solid white",
+          }}
+        >
           {navLinks.map((section, index) => (
             <Col className={styles.footerCol} key={index}>
               <h5>{section.header}</h5>
               <ul>
                 {section.links.map((link, ind) => (
                   <li key={`${index} ${ind}`}>
-                    <Link to={link.to}>
-                      {link.text}
-                    </Link>
+                    <Link to={link.to}>{link.text}</Link>
                   </li>
                 ))}
               </ul>
@@ -98,8 +101,8 @@ export const Footer = () => {
                 )}
                 {subscribedFail && (
                   <span>
-                    Sorry something went wrong we were unable to add you to
-                    our mailing list
+                    Sorry something went wrong we were unable to add you to our
+                    mailing list
                   </span>
                 )}
               </Form.Group>

@@ -84,11 +84,5 @@ namespace MapVisualization.Controllers
             int needsTotal = await cosmosDbService.GetNeedTotalAsync("SELECT * FROM c");
             return new Dictionary<string, int>() { { "resources", resourcesTotal }, { "needs", needsTotal } };
         }
-
-        [HttpGet("bingmapsapikey")]
-        public ActionResult<Dictionary<string, string>> GetBingMapsApiKey()
-        {
-            return new Dictionary<string, string>() { { "key", configuration.GetSection("bingMapsAPI").GetSection("key").Value } };
-        }
     }
 }

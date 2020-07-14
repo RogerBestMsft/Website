@@ -1,0 +1,89 @@
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+
+namespace MapVisualization.Controllers
+{
+    [ApiController]
+    [Route("[controller]")]
+    public class KeysController : ControllerBase
+    {
+        private readonly ILogger<DataController> logger;
+
+        private readonly IConfiguration configuration;
+
+        public KeysController(ILogger<DataController> logger, IConfiguration configuration)
+        {
+            this.logger = logger;
+
+            this.configuration = configuration;
+        }
+
+        [HttpGet("bingmapsapi")]
+        public ActionResult<Dictionary<string, string>> GetBingMapsApiKey()
+        {
+            return new Dictionary<string, string>() { { "key", configuration.GetSection("BING_MAPS_API").Value } };
+        }
+
+        [HttpPost("directlinetoken")]
+        public async Task<ActionResult<Dictionary<string, string>>> GetDirectLineToken()
+        {
+
+
+            var secret = configuration.GetSection("DIRECT_LINE_SECRET").Value;
+
+            HttpClient client = new HttpClient();
+
+            HttpRequestMessage request = new HttpRequestMessage(
+                HttpMethod.Post,
+                $"https://directline.botframework.com/v3/directline/tokens/generate");
+
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", secret);
+
+            var userId = $"dl_{Guid.NewGuid()}";
+
+            request.Content = new StringContent(
+                JsonConvert.SerializeObject(
+                    new { User = new { Id = userId } }),
+                    Encoding.UTF8,
+                    "application/json");
+
+            var response = await client.SendAsync(request);
+            string token = String.Empty;
+
+            if (response.IsSuccessStatusCode)
+            {
+                var body = await response.Content.ReadAsStringAsync();
+                token = JsonConvert.DeserializeObject<DirectLineToken>(body).token;
+            }
+
+            var config = new ChatConfig()
+            {
+                Token = token,
+                UserId = userId
+            };
+
+            return new Dictionary<string, string>() { { "token", config.Token } };
+        }
+    }
+
+    public class DirectLineToken
+    {
+        public string conversationId { get; set; }
+        public string token { get; set; }
+        public int expires_in { get; set; }
+    }
+    public class ChatConfig
+    {
+        public string Token { get; set; }
+        public string UserId { get; set; }
+    }
+
+}

@@ -7,9 +7,11 @@ import Row from "react-bootstrap/Row";
 import Image from "react-bootstrap/Image";
 import { AppBar } from "../components/AppBar";
 import { Footer } from "../components/Footer";
+import { MinimizeWebChat } from "../components/Webchat";
 import styles from "./ContactPage.module.css";
 import { useForm } from "react-hook-form";
 import crowdImage from "../assets/crowd.png";
+
 
 export const ContactPage = () => {
   const [contactSuccess, setContactSuccess] = useState(false);
@@ -92,6 +94,7 @@ export const ContactPage = () => {
                 </span>
               )}
             </Form>
+            <MinimizeWebChat></MinimizeWebChat>
           </Col>
         </Row>
       </Container>
