@@ -10,7 +10,6 @@ import { Link } from "react-router-dom";
 import pushpinInvert from "../assets/Pin Invertcropped.svg";
 import pushpin from "../assets/Pinscropped.svg";
 import { AppBar } from "../components/AppBar";
-import { Footer } from "../components/Footer";
 import styles from "./MapVisualization.module.css";
 
 //TODO: Comment this file more and refractor code
@@ -54,7 +53,6 @@ export const MapVisualization = () => {
         </Button>
         <AlertAnon show={show} setShow={setShow}></AlertAnon>
       </div>
-      <Footer></Footer>
     </div>
   );
 };

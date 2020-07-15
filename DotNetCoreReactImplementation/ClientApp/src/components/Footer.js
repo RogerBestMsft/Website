@@ -30,118 +30,76 @@ export const Footer = () => {
     result.subscribed ? setSubscribedSuccess(true) : setSubscribedFail(true);
   };
 
+  const links = [
+    { to: '/', text: 'About CORAbot' },
+    { to: '/', text: 'Hack For COVID-19' },
+    { to: '/', text: 'Hack For Good' },
+    { to: '/', text: 'Contact Us' }
+  ]
+
   return (
     <footer className={styles.footer}>
       <Container className="text-light p-3">
         <Row>
-          <Col>
-            <h4>About CORAbot</h4>
+          <Col as={Container} md={3}>
             <ul>
-              <li>
-                <Link to="/">About CORAbot</Link>
-              </li>
-              <li>
-                <Link to="/">Affiliates</Link>
-              </li>
-              <li>
-                <Link to="/">Sitemap</Link>
-              </li>
-              <li>
-                <Link to="/">CORA</Link>
-              </li>
+              {links.map((link, index) => (
+                <li key={index}>
+                  <Link to={link.to}>
+                    {link.text}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </Col>
-          <Col>
-            <h4>Help & FAQs</h4>
-            <ul>
-              <li>
-                <Link to="/"></Link>
-              </li>
-              <li>
-                <Link to="/">Affiliates</Link>
-              </li>
-              <li>
-                <Link to="/">Sitemap</Link>
-              </li>
-              <li>
-                <Link to="/">CORA</Link>
-              </li>
-            </ul>
-          </Col>
-          <Col>
-            <h4>Something Else Here</h4>
-            <ul>
-              <li>
-                <Link to="/">Something</Link>
-              </li>
-              <li>
-                <Link to="/">Something</Link>
-              </li>
-              <li>
-                <Link to="/">Something</Link>
-              </li>
-              <li>
-                <Link to="/">Something</Link>
-              </li>
-            </ul>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Form onSubmit={handleSubmit(subscribe)}>
-              <Form.Group as={Row} controlId="">
-                <Col>
-                  <Form.Label>Sign up for CORAbot Emails</Form.Label>
-
-                  <InputGroup className="mb-2 mr-sm-2">
-                    <Form.Control
-                      ref={register({ required: true, minLength: 1 })}
-                      name="Email"
-                      type="email"
-                      placeholder="Email address"
-                    />
-                    <InputGroup.Append>
-                      <Button type="submit">{">"}</Button>
-                    </InputGroup.Append>
-                  </InputGroup>
-                  {errors.email && <span>This field is required</span>}
-                  {subscribedSuccess && (
-                    <span>You have been added to our mailing list</span>
-                  )}
-                  {subscribedFail && (
-                    <span>
-                      Sorry something went wrong we were unable to add you to
-                      our mailing list
-                    </span>
-                  )}
-                </Col>
+          <Col as={Container} md={3} className={styles.footerFormCol}>
+            <Form>
+              <Form.Group controlId="" className={styles.footerFormGroup}>
+                <Form.Label>Choose Region:</Form.Label>
+                <Dropdown>
+                  <Dropdown.Toggle id="dropdown-basic">
+                    {region}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu className={styles.footerFormDropdown}>
+                    <Dropdown.Item onClick={() => setRegion("United States")}>
+                      United States
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={() => setRegion("Italy")}>
+                      Italy
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={() => setRegion("Spain")}>
+                      Spain
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </Form.Group>
             </Form>
           </Col>
-          <Col>
-            <Form>
-              <Form.Group as={Row} controlId="">
-                <Col>
-                  <Form.Label>Choose Region:</Form.Label>
-
-                  <Dropdown>
-                    <Dropdown.Toggle id="dropdown-basic">
-                      {region}
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                      <Dropdown.Item onClick={() => setRegion("United States")}>
-                        United States
-                      </Dropdown.Item>
-                      <Dropdown.Item onClick={() => setRegion("Italy")}>
-                        Italy
-                      </Dropdown.Item>
-                      <Dropdown.Item onClick={() => setRegion("Spain")}>
-                        Spain
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </Col>
+          <Col md={6} className={styles.footerFormCol}>
+            <Form onSubmit={handleSubmit(subscribe)}>
+              <Form.Group controlId="" className={styles.footerFormGroup}>
+                <Form.Label>Sign up for CORAbot Emails</Form.Label>
+                <InputGroup className="mr-sm-2">
+                  <Form.Control
+                    ref={register({ required: true, minLength: 1 })}
+                    name="Email"
+                    type="email"
+                    placeholder="Email"
+                  />
+                  <InputGroup.Append>
+                    <Button type="submit">{">"}</Button>
+                  </InputGroup.Append>
+                </InputGroup>
+                {errors.email && <span>This field is required</span>}
+                {subscribedSuccess && (
+                  <span>You have been added to our mailing list</span>
+                )}
+                {subscribedFail && (
+                  <span>
+                    Sorry something went wrong we were unable to add you to
+                    our mailing list
+                  </span>
+                )}
               </Form.Group>
             </Form>
           </Col>

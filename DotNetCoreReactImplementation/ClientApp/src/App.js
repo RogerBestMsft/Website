@@ -7,11 +7,12 @@ import { ErrorPage } from "./pages/ErrorPage";
 import { FaqPage } from "./pages/FaqPage";
 import { HomePage } from "./pages/HomePage";
 import { LandingPage } from "./pages/LandingPage";
-import { LearnMorePage } from "./pages/LearnMorePage";
+import { TechnologyPage } from "./pages/TechnologyPage";
 import { MapVisualization } from "./pages/MapVisualization";
 import { NeedsPage } from "./pages/NeedsPage";
 import { PartnersPage } from "./pages/PartnersPage";
 import { PrivacyPage } from "./pages/PrivacyPage";
+import { CaseStudiesPage } from "./pages/CaseStudiesPage";
 
 /*
 .########..########...#######........##.########..######..########....########..#######..########...#######...######.
@@ -27,6 +28,8 @@ import { PrivacyPage } from "./pages/PrivacyPage";
 //TODO: add tests
 //TODO: use semantic html and address accessability
 //TODO: build mobile view of pages
+//TODO: Decide on icons
+//TODO: Fill out About page with images and bios
 
 export const App = () => {
   return (
@@ -46,8 +49,11 @@ export const App = () => {
       <Route exact path="/needs">
         <NeedsPage />
       </Route>
-      <Route exact path="/learn">
-        <LearnMorePage />
+      <Route exact path="/studies">
+        <CaseStudiesPage />
+      </Route>
+      <Route exact path="/technology">
+        <TechnologyPage />
       </Route>
       <Route exact path="/privacy">
         <PrivacyPage />

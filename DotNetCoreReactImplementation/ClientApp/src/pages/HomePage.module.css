@@ -1,3 +1,25 @@
+.banner {
+  color: white;
+  justify-content: center;
+  padding: 20% 50% 5em 3%;
+  text-align: left;
+  background: #0A1624;
+  background-repeat: no-repeat;
+  background-size: 70%;
+  background-position: 200% -5%;
+}
+
+.banner h1 {
+  font-size: 40px;
+  font-weight: bold;
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+.banner p {
+  font-size: 20px;
+  line-height: 25px;
+}
 
 .hero {
   flex:auto;
@@ -7,8 +29,40 @@
   background: #0a1624;
 }
 
-.colImage{
+.map {
+  background: rgba(10, 22, 36, 0.7);
+  background-repeat: no-repeat;
+  background-blend-mode: overlay;
+  background-position: -2% 50%;
+  background-size: 450%;
+}
+
+.colText {
+  color: white;
+  text-align: left;
+}
+
+.colText > div {
+  padding: 0 20%;
+}
+
+.colText h2 {
+  margin-bottom: 1em;
+}
+
+.colImage {
   height: 100%;
   width: 100%;
-    object-fit: cover;
+  object-fit: cover;
+}
+
+.colImageWrapper {
+  background: rgba(4, 191, 216, 0.3);
+  background-blend-mode: overlay;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.colImageWrapper img {
+  opacity: 0;
 }

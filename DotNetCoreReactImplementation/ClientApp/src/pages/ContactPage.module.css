@@ -4,8 +4,10 @@
 }
 
 .colImageWrapper {
+  background: rgba(4, 191, 216, 0.4);
   background-blend-mode: overlay;
   background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .colImage{
@@ -19,4 +21,18 @@
   font-weight: bold;
   color: white;
   padding: 10% 0;
+}
+
+.chatButton {
+  border-radius: 50%;
+  height: 75px;
+  width: 75px;
+  padding: 15px;
+  position: absolute;
+  right: 30px;
+  bottom: 20px;
+}
+
+.chatButton svg {
+  fill: white;
 }

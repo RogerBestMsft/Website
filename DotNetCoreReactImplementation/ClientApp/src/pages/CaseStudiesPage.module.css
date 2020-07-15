@@ -1,0 +1,32 @@
+.container {
+  padding: 5% 10%;
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-position: left calc(87vw - 10%) center;
+}
+
+.section {
+  text-align: left;
+  padding: 5% 15% 5% 0;
+}
+
+.section h3 {
+  color: var(--color-primary);
+  font-weight: bold;
+  font-size: 25px;
+  line-height: 29px;
+  padding-bottom: 1em;
+}
+
+.section h4 {
+  color: black;
+  font-weight: bold;
+  font-size: 1em;
+  padding: 2em 0 1em 0;
+}
+
+.blurb {
+  color: var(--color-primary);
+  font-size: 20px;
+  padding-top: 5%;
+}
