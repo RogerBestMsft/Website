@@ -41,13 +41,13 @@ export const ContactPage = () => {
            * Actual filter color TBD
            */}
           <Col sm={0} md={6} lg={6} className={styles.colImageWrapper} style={{
-            'background': `url(${crowdImage}), rgba(4, 191, 216, 0.5)`,
+            'background': `url(${crowdImage}), rgba(4, 191, 216, 0.4)`,
             'backgroundSize': 'cover'
           }}>
             <Image className={styles.colImage} src={crowdImage}/>
           </Col>
           <Col sm={12} md={6} lg={6} className={` p-5`}>
-            <h2 className={styles.colFormHeader}>Have some questions?</h2>
+            <h2 className={styles.colFormHeader}>Contact Us</h2>
             <Form onSubmit={handleSubmit(contact)}>
               <Form.Group controlId="firstName">
                 <Form.Control
@@ -78,7 +78,8 @@ export const ContactPage = () => {
                   name="Details"
                   ref={register({ required: true, minLength: 1 })}
                   as="textarea"
-                  placeholder="Your Question"
+                  rows="6"
+                  placeholder="Message"
                 />
               </Form.Group>
               <Button variant="primary" block type="submit">

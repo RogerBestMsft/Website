@@ -50,46 +50,70 @@ export const Footer = () => {
     {
       header: "Nonprofits & Partner Information",
       links: [
-        { to: "/", text: "Case Studies" },
-        { to: "/", text: "Locations" },
-        { to: "/", text: "Sign Up" },
-      ],
-    },
+        { to: '/needs', text: 'Case Studies' },
+        { to: '/', text: 'Locations' },
+        { to: '/', text: 'Sign Up' }
+      ]
+    }
   ];
+
+  const links = [
+    { to: '/', text: 'About CORAbot' },
+    { to: '/', text: 'Hack For COVID-19' },
+    { to: '/', text: 'Hack For Good' },
+    { to: '/', text: 'Contact Us' }
+  ]
 
   return (
     <footer className={styles.footer}>
       <Container className="text-light p-3">
-        <Row
-          className={styles.footerRow}
-          style={{
-            borderBottom: "1px solid white",
-          }}
-        >
-          {navLinks.map((section, index) => (
-            <Col className={styles.footerCol} key={index}>
-              <h5>{section.header}</h5>
-              <ul>
-                {section.links.map((link, ind) => (
-                  <li key={`${index} ${ind}`}>
-                    <Link to={link.to}>{link.text}</Link>
+        <Row>
+          <Col as={Container} md={3}>
+            <div>
+              <ul style={{'textAlign': 'left'}}>
+                {links.map((link, index) => (
+                  <li key={index}>
+                    <Link to={link.to}>
+                      {link.text}
+                    </Link>
                   </li>
                 ))}
               </ul>
-            </Col>
-          ))}
-        </Row>
-        <Row className={styles.footerRow}>
-          <Col md={8}>
+            </div>
+          </Col>
+          <Col as={Container} md={3} className={styles.footerFormCol}>
+            <Form>
+              <Form.Group controlId="" className={styles.footerFormGroup}>
+                <Form.Label>Choose Region:</Form.Label>
+                <Dropdown>
+                  <Dropdown.Toggle id="dropdown-basic">
+                    {region}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu className={styles.footerFormDropdown}>
+                    <Dropdown.Item onClick={() => setRegion("United States")}>
+                      United States
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={() => setRegion("Italy")}>
+                      Italy
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={() => setRegion("Spain")}>
+                      Spain
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </Form.Group>
+            </Form>
+          </Col>
+          <Col md={6} className={styles.footerFormCol}>
             <Form onSubmit={handleSubmit(subscribe)}>
               <Form.Group controlId="" className={styles.footerFormGroup}>
                 <Form.Label>Sign up for CORAbot Emails</Form.Label>
-                <InputGroup className="mb-2 mr-sm-2">
+                <InputGroup className="mr-sm-2">
                   <Form.Control
                     ref={register({ required: true, minLength: 1 })}
                     name="Email"
                     type="email"
-                    placeholder="Email address"
+                    placeholder="Email"
                   />
                   <InputGroup.Append>
                     <Button type="submit">{">"}</Button>
@@ -105,29 +129,6 @@ export const Footer = () => {
                     mailing list
                   </span>
                 )}
-              </Form.Group>
-            </Form>
-          </Col>
-          <Col md={4}>
-            <Form>
-              <Form.Group controlId="" className={styles.footerFormGroup}>
-                <Form.Label>Choose Region:</Form.Label>
-                <Dropdown>
-                  <Dropdown.Toggle id="dropdown-basic">
-                    {region}
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => setRegion("United States")}>
-                      United States
-                    </Dropdown.Item>
-                    <Dropdown.Item onClick={() => setRegion("Italy")}>
-                      Italy
-                    </Dropdown.Item>
-                    <Dropdown.Item onClick={() => setRegion("Spain")}>
-                      Spain
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
               </Form.Group>
             </Form>
           </Col>

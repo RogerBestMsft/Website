@@ -1,4 +1,10 @@
 .logo {
-  height: 1.65rem;
+  height: 2.5rem;
   width: auto;
+}
+
+.navLink {
+  margin: 0.5em;
+  text-transform: uppercase;
+  font-size: 15px;
 }
