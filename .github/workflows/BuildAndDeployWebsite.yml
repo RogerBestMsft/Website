@@ -60,7 +60,7 @@ jobs:
                   
     # Deploy the website to an Azure App Service    
     - name: Deploy bits to ProjectCoraBot website, corabot.org
-      uses: Azure/webapps-deploy@v2.1
+      uses: Azure/webapps-deploy@v2
       with:
         # Name of the Azure Web App
         app-name: ProjejctCoraBot
