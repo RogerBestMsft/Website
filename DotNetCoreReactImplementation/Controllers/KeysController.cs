@@ -33,7 +33,7 @@ namespace MapVisualization.Controllers
         }
 
         [HttpPost("directlinetoken")]
-        public async Task<ActionResult<Dictionary<string, string>>> GetDirectLineToken()
+        public async Task<ActionResult<ChatConfig>> GetDirectLineToken()
         {
 
 
@@ -66,11 +66,11 @@ namespace MapVisualization.Controllers
 
             var config = new ChatConfig()
             {
-                Token = token,
-                UserId = userId
+                secretToken = token,
+                userID = userId
             };
 
-            return new Dictionary<string, string>() { { "token", config.Token } };
+            return config;
         }
     }
 
@@ -82,8 +82,8 @@ namespace MapVisualization.Controllers
     }
     public class ChatConfig
     {
-        public string Token { get; set; }
-        public string UserId { get; set; }
+        public string secretToken { get; set; }
+        public string userID { get; set; }
     }
 
 }

@@ -5,17 +5,22 @@
   "dependencies": {
     "@turf/turf": "^5.1.6",
     "bootstrap": "^4.5.0",
-    "botframework-webchat": "^4.9.1",
+    "botframework-webchat": "^4.9.2",
     "jquery": "^3.5.1",
     "popper.js": "^1.16.1",
     "react": "^16.13.1",
-    "react-bootstrap": "^1.0.1",
+    "react-bootstrap": "^1.2.2",
     "react-dom": "^16.13.1",
-    "react-hook-form": "^5.7.2",
+    "react-hook-form": "^6.0.7",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
-    "rimraf": "^3.0.2",
-    "typescript": "^3.9.3"
+    "rimraf": "^3.0.2"
+  },
+  "devDependencies": {
+    "ajv": "^6.12.3",
+    "cross-env": "^5.2.0",
+    "nan": "^2.14.1",
+    "typescript": "^3.9.7"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -9,29 +9,43 @@ import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 
 import styles from "./WebChat.module.css";
-import WebChatBtn from "../assets/WebChatBtn.svg";
+import { ReactComponent as WebChatBtn } from "../assets/WebChatBtn.svg";
 
-export const WebChat = ({ onFetchToken, styleSet, store, token }) => {
-  const directLine = useMemo(() => createDirectLine({ token }), [token]);
+export const WebChat = ({ onFetchToken, styleSet, store, token, user }) => {
+  console.log("user", user);
+  console.log("token", token);
+  const directLine = useMemo(
+    () =>
+      createDirectLine({
+        token,
+      }),
+    [token]
+  );
 
   useEffect(() => {
     onFetchToken();
   }, [onFetchToken]);
 
-  return token ? (
-    <ReactWebChat directLine={directLine} store={store} styleSet={styleSet} />
+  return token && user ? (
+    <ReactWebChat
+      directLine={directLine}
+      userID={user}
+      store={store}
+      styleSet={styleSet}
+    />
   ) : (
     <Spinner></Spinner>
   );
 
   /* <div className={`${className || ""} connect-spinner`}>
-      <div className="content">
-        <div className="icon">
-          <span className="ms-Icon ms-Icon--Robot" />
+        <div className="content">
+          <div className="icon">
+            <span className="ms-Icon ms-Icon--Robot" />
+          </div>
+          <p>Please wait while we are connecting.</p>
         </div>
-        <p>Please wait while we are connecting.</p>
       </div>
-    </div> */
+       */
 };
 
 export const MinimizeWebChat = () => {
@@ -53,7 +67,6 @@ export const MinimizeWebChat = () => {
             setNewMessage(true);
           }
         }
-
         return next(action);
       }),
     []
@@ -79,13 +92,29 @@ export const MinimizeWebChat = () => {
   const [minimized, setMinimized] = useState(true);
   const [newMessage, setNewMessage] = useState(false);
   const [token, setToken] = useState();
+  const [user, setUser] = useState();
 
   const handleFetchToken = useCallback(async () => {
+    let { conversationId } = sessionStorage;
+
+    if (conversationId) {
+      const res = await fetch(
+        `https://directline.botframework.com/v3/directline/conversations/${conversationId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    }
     if (!token) {
       const res = await fetch("/keys/directlinetoken", { method: "POST" });
-      const { token } = await res.json();
-
-      setToken(token);
+      const result = await res.json();
+      const { secretToken, userID } = result;
+      // sessionStorage.setItem("conversationId", result.);
+      setToken(secretToken);
+      setUser(userID);
     }
   }, [setToken, token]);
 
@@ -104,7 +133,7 @@ export const MinimizeWebChat = () => {
     <div className={styles.webChat}>
       {minimized && (
         <Button className={styles.maximize} onClick={handleMaximizeButtonClick}>
-          <img src={WebChatBtn} alt="web chat  button" />
+          <WebChatBtn title="web chat  button" />
 
           {newMessage && (
             <span className="ms-Icon ms-Icon--CircleShapeSolid red-dot" />
@@ -133,6 +162,7 @@ export const MinimizeWebChat = () => {
             store={store}
             styleSet={styleSet}
             token={token}
+            user={user}
           />
         </div>
       )}
