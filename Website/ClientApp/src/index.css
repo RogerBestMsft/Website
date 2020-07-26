@@ -1,0 +1,31 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: "Helvetica", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  text-align: center;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+/* TODO: change the bootstrap colors to these and update styles accordingly  */
+html {
+  --color-primary: #04bfd8;
+  --color-secondary: #0a1624;
+  --text-primary: #ffffff;
+  --text-secondary: #97989c;
+  --scrollbarBG: #cfd8dc;
+  --thumbBG: #90a4ae;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
