@@ -9,9 +9,9 @@ on:
     branches: [ master ]
 
 env:
-  AZURE_SOURCE_PATH: './DotNetCoreReactImplementation/MapVisualization.sln'
+  AZURE_SOURCE_PATH: './Website/CORAbot.sln'
   MSBUILD_OUTPUT_PATH: './Output'
-  ZIP_INPUT_PATH: './DotNetCoreReactImplementation/Output/'
+  ZIP_INPUT_PATH: './Website/Output/'
   ZIP_OUTPUT_PATH: './WebsitePackage.zip'
   DOTNET_VERSION: '3.1.201'              # set this to the dotnet version to use
   NODE_VERSION: '12.x'
