@@ -11,7 +11,7 @@ TIRA Website
    * ASP.NET and web development (Workload)
    * .NET Core SDK  (Individual Component)
 2. Install [Node](https://nodejs.org/en/) LTS or Current version whichever you prefer. Make sure to select the option to add it to your Path!
-3. Clone this [repo](https://ProjectCora@dev.azure.com/ProjectCora/ProjectTIRA/_git/ProjectTIRA) and open the **Website.sln** solution file found in the Website directory in Visual Studio
+3. Clone this [repo](https://ProjectCora@dev.azure.com/ProjectCora/ProjectTIRA/_git/ProjectTIRA) and open the **CORAbot.sln** solution file found in the Website directory in Visual Studio
 4. Build and run the project
 5. You should now be able to view the site in your default browser.
 
