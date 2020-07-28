@@ -19,12 +19,9 @@ export const CaseStudiesPage = () => {
         subtitle={'CORAbot can be repurposed to fit with any organization’s specific requirements.'}
       />
       <Container fluid as="main" 
+        className={styles.main}
         style={{
-          'padding': '5% 10%',
-          'background': `url(${Symbol})`,
-          'backgroundRepeat': 'no-repeat',
-          'backgroundSize': 'auto',
-          'backgroundPositionX': '450%'
+          'backgroundImage': `url(${Symbol})`
         }}
         >
         <Row className={styles.section}>
@@ -75,7 +72,7 @@ export const CaseStudiesPage = () => {
             rendered to advocates in ways that are highly accessible and intuitive.
           </p>
         </Row>
-        <div style={{'color': 'var(--color-primary', 'fontSize': '20px', 'paddingTop': '5%'}}>
+        <div className={styles.blurb}>
           The widespread scalability of CORAbot will be housed in a Resource Connector for Non-Profits where 
           technology created will be generalized and open sourced, ensuring easy access to all.
         </div>

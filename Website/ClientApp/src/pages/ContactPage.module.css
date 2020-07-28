@@ -17,6 +17,18 @@
   opacity: 0;
 }
 
+@media (min-width:320px) {
+  .colImage {
+    height: 30vh;
+  }
+}
+
+@media (min-width:961px)  {
+  .colImage {
+    height: 100%;
+  }
+}
+
 .colFormHeader {
   font-weight: bold;
   color: white;

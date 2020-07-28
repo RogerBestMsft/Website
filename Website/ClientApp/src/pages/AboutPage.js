@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
@@ -264,7 +264,21 @@ export const AboutPage = () => {
   };
 
   const ProfileSection = ({ title, profiles, bar }) => {
-    const groupSize = 5;
+
+    const [tabletOrLarger, setTabletOrLarger] = useState(window.matchMedia("(min-width:961px)").matches);
+
+    useEffect(() => {
+
+      const mediaQueryHandler = (e) => setTabletOrLarger(e.matches);
+
+      window.matchMedia("(min-width:961px)").addListener(mediaQueryHandler);
+
+      return () => {
+        window.matchMedia("(min-width:961px)").removeListener(mediaQueryHandler);
+      }
+    });
+
+    const groupSize = tabletOrLarger ? 5 : 2;
 
     return (
       <div>
