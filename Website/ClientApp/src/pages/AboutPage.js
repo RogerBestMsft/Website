@@ -80,20 +80,28 @@ export const AboutPage = () => {
 
   const ProfileSection = ({ title, profiles, bar }) => {
 
-    const [tabletOrLarger, setTabletOrLarger] = useState(window.matchMedia("(min-width:961px)").matches);
+    const [isTablet, setIsTablet] = useState(window.matchMedia("(min-width:961px)").matches);
+    const [isDesktop, setIsDesktop] = useState(window.matchMedia("(min-width:1025px)").matches);
 
     useEffect(() => {
+      
+      const isTabletHandler = (e) => setIsTablet(e.matches);
+      const isDesktopHandler = (e) => setIsDesktop(e.matches);
 
-      const mediaQueryHandler = (e) => setTabletOrLarger(e.matches);
-
-      window.matchMedia("(min-width:961px)").addListener(mediaQueryHandler);
+      window.matchMedia("(min-width:961px)").addListener(isTabletHandler);
+      window.matchMedia("(min-width:1025px)").addListener(isDesktopHandler);
 
       return () => {
-        window.matchMedia("(min-width:961px)").removeListener(mediaQueryHandler);
+        window.matchMedia("(min-width:961px)").removeListener(isTabletHandler);
+        window.matchMedia("(min-width:1025px)").removeListener(isDesktopHandler);
       }
     });
 
-    const groupSize = tabletOrLarger ? 5 : 2;
+    const groupSize = (isDesktop)
+      ? 5 
+      : (isTablet)
+        ? 3 
+        : 2;
 
     return (
       <div>
