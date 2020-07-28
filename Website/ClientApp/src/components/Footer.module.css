@@ -55,11 +55,12 @@ a:hover {
 .footerFormGroup > label {
   flex: 1 0 auto;
   margin-bottom: 0;
+  padding: 5px 0;
 }
 
 .footerFormGroup > div {
   flex: 1 1 auto;
-  padding: 0 5%;
+  padding: 5px 5%;
 }
 
 .footerFormGroup button,

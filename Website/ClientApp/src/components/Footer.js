@@ -104,7 +104,7 @@ export const Footer = () => {
             </Form>
           </Col>
         </Row>
-        <Row className="justify-content-center">
+        <Row className="px-5 justify-content-center">
           Copyright © 2020 CORAbot USA, All rights reserved.{" "}
           <Link to="/privacy">Terms of Use | Privacy Policy</Link>
         </Row>
