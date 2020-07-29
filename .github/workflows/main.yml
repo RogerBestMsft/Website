@@ -6,9 +6,9 @@ name: CI
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 env:
   AZURE_SOURCE_PATH: './DotNetCoreReactImplementation/MapVisualization.sln'
@@ -29,7 +29,7 @@ jobs:
     steps:
 
     - name: 'Checkout GitHub Action'
-      uses: actions/checkout@master
+      uses: actions/checkout@main
 
     - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
       uses: actions/setup-dotnet@v1
@@ -65,7 +65,7 @@ jobs:
       uses: Azure/webapps-deploy@v2.1
       with:
         # Name of the Azure Web App
-        app-name: ProjejctCoraBot
+        app-name: RebCoraO
         publish-profile: ${{ secrets.PROJECTCORAWEBSITE_PUBLISHPROFILE }}
         # Applies to Web App only: Path to package or folder. *.zip, *.war, *.jar or a folder to deploy
         package: '${{ env.ZIP_OUTPUT_PATH }}'
